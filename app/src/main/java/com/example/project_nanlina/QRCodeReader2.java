@@ -15,7 +15,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class QRCodeReader extends AppCompatActivity {
+public class QRCodeReader2 extends AppCompatActivity {
 
     private Button buttonScan;
     private TextView textViewId, textViewResult;
@@ -25,7 +25,7 @@ public class QRCodeReader extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_code_reader);
+        setContentView(R.layout.qr_code_reader2);
 
         buttonScan = (Button) findViewById(R.id.button);
         textViewId = (TextView) findViewById(R.id.result);
@@ -51,11 +51,13 @@ public class QRCodeReader extends AppCompatActivity {
         if (result != null) {
             // QR 코드가 없으면
             if (result.getContents() == null) {
-                Toast.makeText(QRCodeReader.this, "취소!", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(QRCodeReader2.this, "취소!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), QRCodeReader2.class);
+                startActivity(intent);
             }
             // QR 코드가 있으면
             else {
-                Toast.makeText(QRCodeReader.this, "스캔완료!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QRCodeReader2.this, "스캔완료!", Toast.LENGTH_SHORT).show();
 
                 try {
                     // data를 json으로 변환
