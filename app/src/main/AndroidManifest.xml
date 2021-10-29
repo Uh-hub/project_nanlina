@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project_NanlinA">
+        <activity
+            android:name=".login.ActivityLogIn"
+            android:exported="true" />
+        <activity
+            android:name=".login.ActivityRegister"
+            android:exported="true" />
         <activity android:name=".IntroPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,11 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustPan"/>
-
-        <activity android:name=".QRCodeReader1"/>
-        <activity android:name=".QRCodeReader2"/>
-        <activity android:name=".PMIdInput"/>
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".qrcode.QRCodeReader1" />
+        <activity android:name=".qrcode.QRCodeReader2" />
+        <activity android:name=".qrcode.PMIdInput" />
     </application>
 
 </manifest>

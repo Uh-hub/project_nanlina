@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "228882107308",
+    "project_id": "project-nanlina",
+    "storage_bucket": "project-nanlina.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228882107308:android:2e394e64a47254491b0809",
+        "android_client_info": {
+          "package_name": "com.example.project_nanlina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228882107308-08qp37jl4rbj6jgjn20f3mn3a3crkeli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC55uV_B99LopZ3YXE0eXrXQed4oHws8J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228882107308-08qp37jl4rbj6jgjn20f3mn3a3crkeli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

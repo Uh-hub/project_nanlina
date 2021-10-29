@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_nanlina.qrcode.QRCodeReader1;
+
 public class ParkingInfo extends AppCompatActivity {
 
     private Button qrcode;

@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_main.xml" value="0.18489583333333334" />
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_register.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/intro_page.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/parking_info.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/pm_id_input.xml" value="0.1953125" />
