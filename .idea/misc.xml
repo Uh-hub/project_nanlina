@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/drawable/back_arrow.xml" value="0.18796296296296297" />
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/drawable/button1.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/drawable/round1.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/drawable/round2.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/font/font.xml" value="0.2296875" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_main.xml" value="0.18489583333333334" />
         <entry key="..\:/Users/minseo/project_NanlinA/app/src/main/res/layout/activity_register.xml" value="0.19947916666666668" />

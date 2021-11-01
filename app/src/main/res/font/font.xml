@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <font
+        android:font="@font/nanum_gothic"
+        android:fontWeight="400"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/nanum_gothic_bold"
+        android:fontWeight="400"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/nanum_gothic_extra_bold"
+        android:fontWeight="400"
+        android:fontStyle="normal" />
+
+    <font
+        android:font="@font/nanum_gothic_light"
+        android:fontWeight="400"
+        android:fontStyle="normal" />
+
+</font-family>
