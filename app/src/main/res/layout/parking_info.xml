@@ -13,34 +13,28 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="350dp"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/ic_launcher_background" />
 
-        <Button
-            android:id="@+id/button3"
+
+        <ImageView
+            android:id="@+id/imageView2"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/round2"
-            android:drawableStart="@drawable/back_arrow"
-            tools:layout_editor_absoluteX="45dp"
-            tools:layout_editor_absoluteY="22dp" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/back_arrow2" />
 
-        <Button
-            android:id="@+id/qrcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="QR 코드" />
     </FrameLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical"
         android:background="@drawable/round1">
 
@@ -50,11 +44,11 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:gravity="center"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/nanum_gothic_bold"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/nanum_square_b"
             android:text="주차장 이름"
             android:textColor="@color/black"
-            android:textSize="30dp"/>
+            android:textSize="25dp"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -63,85 +57,152 @@
             android:layout_marginTop="10dp"
             android:textAlignment="center"
             android:gravity="center"
-            android:fontFamily="@font/nanum_gothic_bold"
-            android:textSize="20dp"
+            android:fontFamily="@font/nanum_square_b"
+            android:textSize="15dp"
             android:text="주차장 주소" />
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="center"
-            android:background="@drawable/button1"
-            android:fontFamily="@font/nanum_gothic"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:text="길찾기"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/qrcode"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:background="@drawable/button3"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nanum_square_b"
+                android:textSize="20dp"
+                android:text="대여" />
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="40dp"
-                android:fontFamily="@font/nanum_gothic_bold"
-                android:text="전동킥보드"
-                android:textColor="@color/black"
-                android:textSize="25dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text=" "/>
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="100dp"
+            <Button
+                android:layout_width="130dp"
                 android:layout_height="45dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="50dp"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:background="@drawable/button1"
-                android:fontFamily="@font/nanum_gothic_bold"
-                android:text="0대"
-                android:textColor="@color/black"
-                android:textSize="25dp"/>
+                android:layout_weight="1"
+                android:background="@drawable/button2"
+                android:fontFamily="@font/nanum_square_b"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:text="길찾기"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/round3"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:layout_marginLeft="70dp"
-                android:layout_marginRight="40dp"
-                android:text="자전거"
-                android:fontFamily="@font/nanum_gothic_bold"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="7"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanum_square_b"
+                android:text="전동킥보드"
                 android:textColor="@color/black"
-                android:textSize="25dp"/>
+                android:textSize="20dp"/>
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="100dp"
+                android:id="@+id/textView5"
+                android:layout_width="50dp"
                 android:layout_height="45dp"
-                android:layout_marginLeft="65dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="3"
                 android:textAlignment="center"
                 android:gravity="center"
                 android:background="@drawable/button1"
-                android:fontFamily="@font/nanum_gothic_bold"
+                android:fontFamily="@font/nanum_square_b"
                 android:text="0대"
                 android:textColor="@color/black"
-                android:textSize="25dp"/>
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/round3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="9"
+                android:text="자전거"
+                android:fontFamily="@font/nanum_square_b"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="3"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/button1"
+                android:fontFamily="@font/nanum_square_b"
+                android:text="0대"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/round3"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_weight="7"
+                android:text="주차 가능 자리"
+                android:fontFamily="@font/nanum_square_b"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="50dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="30dp"
+                android:layout_weight="4"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:background="@drawable/button4"
+                android:fontFamily="@font/nanum_square_b"
+                android:text="0대"
+                android:textColor="@color/black"
+                android:textSize="20dp"/>
         </LinearLayout>
 
     </LinearLayout>
