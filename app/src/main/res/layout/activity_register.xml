@@ -14,9 +14,10 @@
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
             android:layout_gravity="right"
-            android:layout_marginTop="150dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="140dp"
             app:srcCompat="@drawable/round5" />
 
         <LinearLayout
@@ -82,7 +83,7 @@
                 android:id="@+id/btn_register"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="100dp"
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:fontFamily="@font/nanum_square_b"
