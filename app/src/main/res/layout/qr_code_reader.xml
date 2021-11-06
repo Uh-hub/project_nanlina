@@ -63,7 +63,7 @@
                 android:text="PM 대여 방법을 선택해주세요"/>
 
             <Button
-                android:id="@+id/qrcode2"
+                android:id="@+id/scan_button"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"

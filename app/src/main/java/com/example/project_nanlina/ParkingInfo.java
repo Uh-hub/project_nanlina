@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_nanlina.qrcode.QRCodeReader1;
+import com.example.project_nanlina.qrcode.QRCodeReader;
 
 public class ParkingInfo extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class ParkingInfo extends AppCompatActivity {
         qrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), QRCodeReader1.class);
+                Intent intent = new Intent(getApplicationContext(), QRCodeReader.class);
                 startActivity(intent);
             }
         });
