@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.project_nanlina">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Project_NanlinA">
+        android:theme="@style/Theme.Project_NanlinA"
+        android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_s2_BwFrKHJUgQ_05_Qw5CpTIGLj47DI"/>
+
         <activity
             android:name=".login.ActivityLogIn"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".login.ActivityRegister"
             android:exported="true" />
@@ -26,14 +34,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.kakao.sdk.AppKey"
-            android:value="ff0b4cce58ea3da86b15abcc867059c0"/>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="ff0b4cce58ea3da86b15abcc867059c0" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".qrcode.QRCodeReader1"></activity>
+        <activity android:name=".qrcode.QRCodeReader1" />
         <activity android:name=".qrcode.QRCodeReader2" />
-        <activity android:name=".qrcode.PMIdInput"></activity>
+        <activity android:name=".qrcode.PMIdInput" />
+<!--        <activity android:name=".mapView" />-->
     </application>
 
 </manifest>
