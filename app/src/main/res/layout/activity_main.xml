@@ -16,18 +16,19 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/Theme.Project_NanlinA.AppBarOverlay">
+            android:background="@null"
+            app:elevation="0dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/Theme.Project_NanlinA.PopupOverlay" />
+                android:background="@null"
+                app:elevation="0dp"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-<!--        메인 화면-->
+<!--        메인화면 시작-->
         <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
@@ -47,6 +48,7 @@
                 android:text="로그아웃" />
 
         </RelativeLayout>
+<!--        메인화면 끝-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -56,6 +58,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:paddingLeft="20dp"
+        app:itemTextAppearance="@style/MyItemFont"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 

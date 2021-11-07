@@ -1,30 +1,33 @@
 package com.example.project_nanlina;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentHostCallback;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.project_nanlina.login.ActivityLogIn;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleMap googleMap;
 
     Fragment fragment1;
-    Fragment fragment2;
+    Fragment2 fragment2;
     Fragment fragment3;
 
     DrawerLayout drawer;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
+        drawer.setAlpha(0.85f); //배경이미지 투명도 주기
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toogle);
@@ -65,9 +69,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         fragment1 = new Fragment();
-        fragment2 = new Fragment();
-        fragment3 = new Fragment();
+//        fragment2 = new Fragment2();
+//        fragment3 = new Fragment();
 
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
 
@@ -121,12 +126,12 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.menu1) {
             onFragmentSelected(0, null);
         }
-        else if (id == R.id.menu2) {
-            onFragmentSelected(1, null);
-        }
-        else if (id == R.id.menu3) {
-            onFragmentSelected(2, null);
-        }
+//        else if (id == R.id.menu2) {
+//            onFragmentSelected(1, null);
+//        }
+//        else if (id == R.id.menu3) {
+//            onFragmentSelected(2, null);
+//        }
 
         drawer.closeDrawer(GravityCompat.START);
 
@@ -139,16 +144,13 @@ public class MainActivity extends AppCompatActivity
 
         if (position == 0) {
             curFragment = fragment1;
-            toolbar.setTitle("첫번째 화면");
         }
-        else if (position == 1) {
-            curFragment = fragment2;
-            toolbar.setTitle("두번째 화면");
-        }
-        else if (position == 2) {
-            curFragment = fragment3;
-            toolbar.setTitle("세번째 화면");
-        }
+//        else if (position == 1) {
+//            curFragment = fragment2;
+//        }
+//        else if (position == 2) {
+//            curFragment = fragment3;
+//        }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
     }
