@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_nanlina.MainActivity;
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.map_permission;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -48,8 +49,8 @@ public class ActivityLogIn extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // 로그인 성공
-                            Intent intent = new Intent(ActivityLogIn.this, MainActivity.class);
+                            // 로그인 성공(허용 화면으로 이동)
+                            Intent intent = new Intent(ActivityLogIn.this, map_permission.class);
                             startActivity(intent);
                             finish();   // 현재 액티비티 파괴
                         }

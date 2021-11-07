@@ -16,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project_NanlinA.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".map_permission"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_s2_BwFrKHJUgQ_05_Qw5CpTIGLj47DI"/>
+            android:value="AIzaSyD_s2_BwFrKHJUgQ_05_Qw5CpTIGLj47DI" />
 
         <activity
             android:name=".login.ActivityLogIn"
@@ -34,17 +37,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.kakao.sdk.AppKey"
-            android:value="ff0b4cce58ea3da86b15abcc867059c0" />
-
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".qrcode.QRCodeReader"></activity>
+        <activity android:name=".qrcode.QRCodeReader" />
         <activity android:name=".qrcode.PMIdInput" />
-        <!--        <activity android:name=".mapView" />-->
     </application>
 
 </manifest>

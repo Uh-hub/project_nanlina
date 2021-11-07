@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity
 
          //회원 탈퇴
 //         mFirebaseAuth.getCurrentUser().delete();
+
+
     }
 
     @Override
@@ -102,9 +105,16 @@ public class MainActivity extends AppCompatActivity
         this.googleMap = googleMap;
         //35.154794630480595, 126.92353898107554 1번 주차장
         //카메라를 주차장 1번으로 맞추고 확대 완료
-        LatLng latLng = new LatLng(35.154794630480595, 126.92353898107554);
+
+        //카메라를 현재 위치로 고정
+        Intent intent = getIntent();
+        double latitude = intent.getDoubleExtra("latitude", 0);
+        double longitude = intent.getDoubleExtra("longitude", 0);
+        LatLng latLng = new LatLng(latitude, longitude);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(19));
+
+        //마커 생성 코드
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("산수1동 제3주차장");
         googleMap.addMarker(markerOptions);
     }
