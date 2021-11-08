@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -44,18 +45,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity
-        implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, FragmentCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FirebaseAuth mFirebaseAuth;
     GoogleMap map;
-
-    Fragment fragment1;
-    Fragment2 fragment2;
-    Fragment fragment3;
-
-    DrawerLayout drawer;
-    Toolbar toolbar;
 
     double longitude;
     double latitude;
@@ -65,40 +58,17 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //지도
-        ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.lab1_map)).getMapAsync(this);
+
+        // 지도
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.lab1_map)).getMapAsync(this);
         Intent intent = getIntent();
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = intent.getDoubleExtra("longitude", 0);
 
 
-
-
-//        바로가기 메뉴
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.drawer_layout);
-        drawer.setAlpha(0.85f); //배경이미지 투명도 주기
-        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toogle);
-        toogle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-
-        fragment1 = new Fragment();
-//        fragment2 = new Fragment2();
-//        fragment3 = new Fragment();
-
-        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
-
-
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        Button btn_logout = findViewById(R.id.btn_logout);
+        ImageView btn_logout = findViewById(R.id.btn_logout);
 
         btn_logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +84,10 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-         //회원 탈퇴
+        //회원 탈퇴
 //         mFirebaseAuth.getCurrentUser().delete();
-
-
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -140,6 +109,7 @@ public class MainActivity extends AppCompatActivity
             reverseGeocdingThread.start();
         }
     }
+
     class MyReverseGeodocdingThread extends Thread {
         String address;
         public MyReverseGeodocdingThread(String address){
@@ -177,52 +147,5 @@ public class MainActivity extends AppCompatActivity
             }
         }
     };
-
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.menu1) {
-            onFragmentSelected(0, null);
-        }
-//        else if (id == R.id.menu2) {
-//            onFragmentSelected(1, null);
-//        }
-//        else if (id == R.id.menu3) {
-//            onFragmentSelected(2, null);
-//        }
-
-        drawer.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
-    @Override
-    public void onFragmentSelected(int position, Bundle bundle) {
-        Fragment curFragment = null;
-
-        if (position == 0) {
-            curFragment = fragment1;
-        }
-//        else if (position == 1) {
-//            curFragment = fragment2;
-//        }
-//        else if (position == 2) {
-//            curFragment = fragment3;
-//        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
-    }
 
 }

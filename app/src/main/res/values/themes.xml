@@ -24,7 +24,4 @@
         <item name="android:textSize">20dp</item>
     </style>
 
-    <style name="Theme.Project_NanlinA.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Project_NanlinA.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
