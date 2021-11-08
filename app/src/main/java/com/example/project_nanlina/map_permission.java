@@ -13,8 +13,13 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -28,8 +33,11 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.io.FileWriter;
 
 public class map_permission extends AppCompatActivity {
     private static final String TAG = map_permission.class.getSimpleName();
@@ -114,7 +122,6 @@ public class map_permission extends AppCompatActivity {
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(map_permission.this);
-
                         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
                     }
                 })
