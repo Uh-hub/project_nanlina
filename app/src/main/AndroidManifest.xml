@@ -42,6 +42,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".qrcode.QRCodeReader" />
         <activity android:name=".qrcode.PMIdInput" />
+        <activity android:name=".parking.ArriveParking"></activity>
     </application>
 
 </manifest>
