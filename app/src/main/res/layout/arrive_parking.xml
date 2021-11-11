@@ -10,16 +10,15 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="320dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="190dp"
-            app:srcCompat="@drawable/round6" />
+            android:src="@drawable/parking_change_1" />
 
 
         <ImageView
-            android:id="@+id/imageView4"
             android:layout_width="75dp"
             android:layout_height="130dp"
             android:layout_gravity="right"
@@ -27,23 +26,23 @@
             app:srcCompat="@drawable/round8" />
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imageView3"
             android:layout_width="300dp"
             android:layout_height="170dp"
             android:layout_gravity="center"
             android:layout_marginTop="220dp"
-            app:srcCompat="@drawable/round9" />
+            app:srcCompat="@drawable/parking_change_3" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/imageView2"
             android:layout_width="280dp"
             android:layout_height="170dp"
             android:layout_gravity="center"
             android:layout_marginTop="220dp"
-            app:srcCompat="@drawable/square1" />
+            app:srcCompat="@drawable/parking_change_2" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/imageView4"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="280dp"
@@ -59,35 +58,35 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
-                android:layout_marginLeft="50dp"
+                android:layout_marginTop="130dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginBottom="15dp"
                 android:text="주차장에 도착했습니다"
-                android:fontFamily="@font/nanum_square_b"
-                android:textSize="33dp"
-                android:textColor="#000000"/>
+                android:fontFamily="@font/nanum_square_eb"
+                android:textSize="30dp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginBottom="10dp"
                 android:text="주차장 선 안에"
-                android:fontFamily="@font/nanum_square_b"
-                android:textSize="33dp"
-                android:textColor="#000000"/>
+                android:fontFamily="@font/nanum_square_eb"
+                android:textSize="30dp"
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginBottom="30dp"
                 android:text="정차해주세요"
-                android:fontFamily="@font/nanum_square_b"
-                android:textSize="33dp"
-                android:textColor="#000000"/>
+                android:fontFamily="@font/nanum_square_eb"
+                android:textSize="30dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
