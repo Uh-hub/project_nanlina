@@ -47,46 +47,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:orientation="horizontal" >
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/button1"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="150dp"
                     android:layout_marginRight="10dp"
-                    android:textColor="#345067"
-                    android:textSize="20dp"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="17dp"
                     android:fontFamily="@font/nanum_square_b"
                     android:background="@drawable/setcheck_bt1"
                     android:text="전체" />
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/button2"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:textSize="20dp"
-                    android:textColor="#345067"
+                    android:textSize="17dp"
+                    android:textColor="@drawable/text_color"
                     android:fontFamily="@font/nanum_square_b"
-                    android:background="@drawable/setcheck_bt1"
+                    android:background="@drawable/setcheck_bt2"
                     android:text="전동킥보드" />
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/button3"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="100dp"
-                    android:textSize="20dp"
-                    android:textColor="#345067"
+                    android:textSize="17dp"
+                    android:textColor="@drawable/text_color"
                     android:fontFamily="@font/nanum_square_b"
-                    android:background="@drawable/setcheck_bt1"
+                    android:background="@drawable/setcheck_bt3"
                     android:text="전기자전거" />
             </LinearLayout>
         </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
