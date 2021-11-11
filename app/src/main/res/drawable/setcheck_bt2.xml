@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  버튼이 눌렸을때의 이미지 -->
+    <item android:state_selected="true" android:drawable="@drawable/setcheck_bt_on2"/>
+
+    <!--  버튼이 눌리지 않았을때의 이미지 -->
+    <item android:drawable="@drawable/setcheck_bt_off"/>
+</selector>
