@@ -40,6 +40,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -72,6 +75,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private FirebaseAuth mFirebaseAuth;
+
     //지도랑 마커 표시
     private GoogleMap map;
     private Marker currentMarker = null;
@@ -137,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        longitude = intent.getDoubleExtra("longitude", 0);
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 로그인 기능
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         ImageView btn_logout = findViewById(R.id.btn_logout);
@@ -154,9 +160,66 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         });
 
-
         //회원 탈퇴
 //         mFirebaseAuth.getCurrentUser().delete();
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+        // 화면 하단 주차장 정보
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+
+        Button button1 = findViewById(R.id.button1);   // 전체
+        Button button2 = findViewById(R.id.button2);   // 전동킥보드
+        Button button3 = findViewById(R.id.button3);   // 전기자전거
+
+        button1.setSelected(true);   // 전체 버튼 눌린 상태로 유지
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button1.setSelected(true);
+                button2.setSelected(false);
+                button3.setSelected(false);
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button1.setSelected(false);
+                button2.setSelected(true);
+                button3.setSelected(false);
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                button1.setSelected(false);
+                button2.setSelected(false);
+                button3.setSelected(true);
+            }
+        });
+
+
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        PMAdapter adapter = new PMAdapter();
+
+        adapter.addItem(new PM("산수1동 제3주차장", "광주광역시 동구 경양로 309-6", "5대"));
+        adapter.addItem(new PM("산수도서관 주변", "광주광역시 동구 경양로 355", "5대"));
+        adapter.addItem(new PM("계림동 공영주차장", "광주광역시 동구 경양로235번길 4", "5대"));
+
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new OnPMItemClickListener() {
+            @Override
+            public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
+                PM item = adapter.getItem(position);
+                Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
