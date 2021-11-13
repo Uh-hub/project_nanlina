@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String markerTitle = getCurrentAddress(currentPosition);
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
-                //이 때 위도와 경도 정보를 mySQL로 전송하면 됨
+
 
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
@@ -377,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public String getCurrentAddress(LatLng latlng) {
 
-        //지오코더... GPS를 주소로 변환
+        //지오코더 GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
@@ -389,19 +389,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     latlng.longitude,
                     1);
         } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
+            //네트워크 문제 발생 시,
+            Toast.makeText(this, "네트워크가 연결되지 않았습니다", Toast.LENGTH_LONG).show();
+            return "네트워크가 연결되지 않았습니다";
         } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            return "잘못된 GPS 좌표";
+            Toast.makeText(this, "GPS 좌표가 잘못되었습니다", Toast.LENGTH_LONG).show();
+            return "GPS 좌표가 잘못되었습니다";
 
         }
 
 
         if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
-            return "주소 미발견";
+            Toast.makeText(this, "주소를 찾을 수 없습니다", Toast.LENGTH_LONG).show();
+            return "주소를 찾을 수 없습니다";
 
         } else {
             Address address = addresses.get(0);
@@ -445,8 +445,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setDefaultLocation() {
 
 
-        //디폴트 위치, Seoul
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        //디폴트 위치, 광주
+        LatLng DEFAULT_LOCATION = new LatLng(35.15506884797796, 126.83761778574868);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             boolean check_result = true;
 
 
-            // 모든 퍼미션을 허용했는지 체크합니다.
+            // 모든 퍼미션을 허용했는지 체크
 
             for (int result : grandResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
@@ -516,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if (check_result) {
 
-                // 퍼미션을 허용했다면 위치 업데이트를 시작합니다.
+                // 퍼미션을 허용했다면 위치 업데이트를 시작
                 startLocationUpdates();
             } else {
                 // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
@@ -562,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
-                + "위치 설정을 수정하실래요?");
+                + "설정으로 이동하시겠습니까?");
         builder.setCancelable(true);
         builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
             @Override
