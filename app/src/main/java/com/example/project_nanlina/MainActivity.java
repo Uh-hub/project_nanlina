@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+//여기에서 위도, 경도 정보를 받아서 db로 전송해야 함
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -606,7 +606,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
         }
     }
-
 
 }
 
