@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,7 +66,19 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -100,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location location;
 
     private View mLayout; // Snackbar 사용하기 위해 View 필요
+
+
+    // MySQL 연동
+    private static String IP_ADDRESS = "10.0.2.2";
+    private static String TAG2 = "phptest";
+
+    private PMAdapter pmAdapter;
+    private String mJsonString;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -166,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 화면 하단 주차장 정보
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
+        // 상단 분류 버튼 (전체, 전동킥보드, 전기자전거)
         Button button1 = findViewById(R.id.button1);   // 전체
         Button button2 = findViewById(R.id.button2);   // 전동킥보드
         Button button3 = findViewById(R.id.button3);   // 전기자전거
 
         button1.setSelected(true);   // 전체 버튼 눌린 상태로 유지
-
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,25 +223,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
+        // 주차장 정보 리사이클러뷰
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        PMAdapter adapter = new PMAdapter();
 
-        adapter.addItem(new PM("산수1동 제3주차장", "광주광역시 동구 경양로 309-6", "5대"));
-        adapter.addItem(new PM("산수도서관 주변", "광주광역시 동구 경양로 355", "5대"));
-        adapter.addItem(new PM("계림동 공영주차장", "광주광역시 동구 경양로235번길 4", "5대"));
+        MainActivity.GetData task = new MainActivity.GetData();
+        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
 
-        recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new OnPMItemClickListener() {
-            @Override
-            public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
-                PM item = adapter.getItem(position);
-                Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-            }
-        });
+//        adapter.setOnItemClickListener(new OnPMItemClickListener() {
+//            @Override
+//            public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
+//                PM item = adapter.getItem(position);
+//                Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -624,5 +646,122 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
+    private class GetData extends AsyncTask<String, Void, String> {
+
+        ProgressDialog progressDialog;
+        String errorString = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressDialog = ProgressDialog.show(MainActivity.this, "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            progressDialog.dismiss();
+            //mTextViewResult.setText(result);
+            Log.d(TAG2, "response - " + result);
+
+            if (result == null) {
+                Log.d("error", errorString);
+            }
+            else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String serverURL = params[0];
+            String postParameters = params[1];
+
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
+                outputStream.flush();
+                outputStream.close();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG2, "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else {
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                bufferedReader.close();
+
+                return sb.toString().trim();
+            }
+            catch (Exception e) {
+                Log.d(TAG2, "GetData : Error", e);
+                errorString = e.toString();
+
+                return null;
+            }
+        }
     }
+
+    private void showResult() {
+        String TAG_JSON = "webnautes";
+        String TAG_NAME = "name";
+        String TAG_ADDRESS = "address";
+        String TAG_KICKBOARD = "kickboard";
+
+        try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+
+            pmAdapter = new PMAdapter();
+
+            for (int i = 1; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String name = item.getString(TAG_NAME);
+                String address = item.getString(TAG_ADDRESS);
+                String number = item.getString(TAG_KICKBOARD);
+
+                Log.v("result", name);
+
+                pmAdapter.addItem(new PM(name, address, number+"대"));
+            }
+
+            recyclerView.setAdapter(pmAdapter);
+        }
+        catch (JSONException e) {
+            Log.d(TAG2, "showResult : ", e);
+        }
+    }
+
+
+}
 

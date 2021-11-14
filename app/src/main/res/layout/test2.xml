@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:id="@+id/textView_main_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        app:srcCompat="@drawable/menu_image" />
+
+    <ImageView
+        android:id="@+id/btn_logout"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/logout_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="#A6E5E5E5">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@drawable/text_color"
+                    android:textSize="17dp"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:background="@drawable/setcheck_bt1"
+                    android:text="전체" />
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="17dp"
+                    android:textColor="@drawable/text_color"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:background="@drawable/setcheck_bt2"
+                    android:text="전동킥보드" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="100dp"
+                    android:textSize="17dp"
+                    android:textColor="@drawable/text_color"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:background="@drawable/setcheck_bt3"
+                    android:text="전기자전거" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+
+</RelativeLayout>
