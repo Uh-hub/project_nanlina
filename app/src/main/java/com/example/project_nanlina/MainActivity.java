@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //앱을 실행하기 위해 필요한 퍼미션 정의
     String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-    Location mCurrentLocatiion;
+    Location mCurrentLocation;
     LatLng currentPosition;
 
 
@@ -154,12 +155,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-//        ((SupportMapFragment) Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.lab1_map))).getMapAsync(this);
-//        Intent intent = getIntent();
-//        latitude = 3;
-////                intent.getDoubleExtra("latitude", 0);
-//        longitude = intent.getDoubleExtra("longitude", 0);
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -249,8 +244,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setDefaultLocation();
 
-        //런타임 퍼미션 처리
-        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
         int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
@@ -259,26 +252,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
                 hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
 
-            // 2. 이미 퍼미션을 가지고 있다면
-            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
+            startLocationUpdates();
 
+        }else {
 
-            startLocationUpdates(); // 3. 위치 업데이트 시작
-
-
-        }else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
-
-            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+            // 사용자가 퍼미션 거부를 한 적이 있는 경우
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
-                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
-                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                Snackbar. make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
-
-                        // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                        //설명 후, 재 요청
                         ActivityCompat.requestPermissions( MainActivity.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
@@ -286,8 +272,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
             } else {
-                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
-                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                //사용자가 퍼미션을 거부한 적 없는 경우, 바로 요청
                 ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
@@ -297,9 +282,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        // 현재 오동작을 해서 주석처리
-
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng latLng) {
@@ -318,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if (locationList.size() > 0) {
                 location = locationList.get(locationList.size() - 1);
-                //location = locationList.get(0);
 
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
@@ -328,13 +309,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
 
+
                 Log.d(TAG, "onLocationResult : " + markerSnippet);
 
 
                 //현재 위치에 마커 생성하고 이동
                 setCurrentLocation(location, markerTitle, markerSnippet);
 
-                mCurrentLocatiion = location;
+                mCurrentLocation = location;
             }
 
 
@@ -416,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public String getCurrentAddress(LatLng latlng) {
 
-        //지오코더... GPS를 주소로 변환
+        //지오코더 GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
@@ -428,19 +410,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     latlng.longitude,
                     1);
         } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
+            //네트워크 문제 발생 시,
+            Toast.makeText(this, "네트워크가 연결되지 않았습니다", Toast.LENGTH_LONG).show();
+            return "네트워크가 연결되지 않았습니다";
         } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            return "잘못된 GPS 좌표";
+            Toast.makeText(this, "GPS 좌표가 잘못되었습니다", Toast.LENGTH_LONG).show();
+            return "GPS 좌표가 잘못되었습니다";
 
         }
 
 
         if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
-            return "주소 미발견";
+            Toast.makeText(this, "주소를 찾을 수 없습니다", Toast.LENGTH_LONG).show();
+            return "주소를 찾을 수 없습니다";
 
         } else {
             Address address = addresses.get(0);
@@ -484,8 +466,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setDefaultLocation() {
 
 
-        //디폴트 위치, Seoul
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        //디폴트 위치, 광주
+        LatLng DEFAULT_LOCATION = new LatLng(35.15506884797796, 126.83761778574868);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
@@ -543,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             boolean check_result = true;
 
 
-            // 모든 퍼미션을 허용했는지 체크합니다.
+            // 모든 퍼미션을 허용했는지 체크
 
             for (int result : grandResults) {
                 if (result != PackageManager.PERMISSION_GRANTED) {
@@ -555,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if (check_result) {
 
-                // 퍼미션을 허용했다면 위치 업데이트를 시작합니다.
+                // 퍼미션을 허용했다면 위치 업데이트를 시작
                 startLocationUpdates();
             } else {
                 // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
@@ -601,7 +583,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
-                + "위치 설정을 수정하실래요?");
+                + "설정으로 이동하시겠습니까?");
         builder.setCancelable(true);
         builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
             @Override
@@ -761,7 +743,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG2, "showResult : ", e);
         }
     }
-
 
 }
 
