@@ -1,6 +1,7 @@
 package com.example.project_nanlina;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -8,10 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.project_nanlina.parking.ParkingInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -175,7 +179,9 @@ public class Test2 extends AppCompatActivity {
         String TAG_JSON = "webnautes";
         String TAG_NAME = "name";
         String TAG_ADDRESS = "address";
+        String TAG_IMAGE = "image";
         String TAG_KICKBOARD = "kickboard";
+        String TAG_BICYCLE = "bicycle";
 
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -188,14 +194,34 @@ public class Test2 extends AppCompatActivity {
 
                 String name = item.getString(TAG_NAME);
                 String address = item.getString(TAG_ADDRESS);
-                String number = item.getString(TAG_KICKBOARD);
+                String image = item.getString(TAG_IMAGE);
+                String kickboard = item.getString(TAG_KICKBOARD);
+                String bicycle = item.getString(TAG_BICYCLE);
+
+//                int number = Integer.parseInt(kickboard) + Integer.parseInt(bicycle);
+//                String number2 = Integer.toString(number);
 
                 Log.v("result", name);
 
-                pmAdapter.addItem(new PM(name, address, number+"대"));
+                pmAdapter.addItem(new PM(name, address, kickboard+"대"));
             }
 
             recyclerView.setAdapter(pmAdapter);
+
+            pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
+                @Override
+                public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
+                    PM item = pmAdapter.getItem(position);
+
+                    Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+                    intent.putExtra("name", item.getName());
+                    intent.putExtra("address", item.getAddress());
+                    intent.putExtra("kickboard", item.getNumber());
+
+                    startActivity(intent);
+//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
         catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
