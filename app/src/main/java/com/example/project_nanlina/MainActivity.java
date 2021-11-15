@@ -225,15 +225,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         MainActivity.GetData task = new MainActivity.GetData();
         task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
-
-
-//        adapter.setOnItemClickListener(new OnPMItemClickListener() {
-//            @Override
-//            public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
-//                PM item = adapter.getItem(position);
-//                Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-//            }
-//        });
     }
 
 
@@ -738,6 +729,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             recyclerView.setAdapter(pmAdapter);
+
+            pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
+                @Override
+                public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
+                    PM item = pmAdapter.getItem(position);
+                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
         catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
