@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
@@ -70,12 +72,21 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
         TextView textAddress;
         Button buttonNumber;
 
+        // 숨김 정보
+        TextView textPhoto;
+        TextView textKickboard;
+        TextView textBicycle;
+
         public ViewHolder(View itemView, final OnPMItemClickListener listener) {
             super(itemView);
 
             textName = itemView.findViewById(R.id.textName);
             textAddress = itemView.findViewById(R.id.textAddress);
             buttonNumber = itemView.findViewById(R.id.buttonNumber);
+
+            textPhoto = itemView.findViewById(R.id.textPhoto);
+            textKickboard = itemView.findViewById(R.id.textKickboard);
+            textBicycle = itemView.findViewById(R.id.textBicycle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,6 +104,10 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
             textName.setText(item.getName());
             textAddress.setText(item.getAddress());
             buttonNumber.setText(item.getNumber());
+
+            textPhoto.setText(item.getPhoto());
+            textKickboard.setText(item.getKickboard());
+            textBicycle.setText(item.getBicycle());
         }
 
     }
