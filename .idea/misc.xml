@@ -33,6 +33,7 @@
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/arrive_parking_change_1.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/button1.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/button2.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/button5.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2037037037037037" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/parking_change_2.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/parking_change_3.xml" value="0.21145833333333333" />
@@ -48,6 +49,8 @@
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/setcheck_bt_on2.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/setcheck_bt_on3.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/drawable/text_color.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/font/font.xml" value="0.22552083333333334" />
+        <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/activity_finish.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/activity_login.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/activity_main.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/activity_map_permission.xml" value="0.1953125" />
@@ -56,6 +59,7 @@
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/arrive_parking1.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/fragment1.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/fragment2.xml" value="0.19947916666666668" />
+        <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/intro_page.xml" value="0.1953125" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/nav_header_main.xml" value="0.19322916666666667" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/parking_info.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/minseo/project_nanlina/app/src/main/res/layout/pm_id_input.xml" value="0.19322916666666667" />

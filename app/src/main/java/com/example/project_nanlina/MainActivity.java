@@ -47,6 +47,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
+import com.example.project_nanlina.login.ActivityRegister;
 import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -169,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 // 로그아웃하기
                 mFirebaseAuth.signOut();
+                Toast.makeText(MainActivity.this, "로그아웃되었습니다", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, ActivityLogIn.class);
                 startActivity(intent);

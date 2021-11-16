@@ -40,10 +40,14 @@
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".login.RegisterFinish" />
         <activity android:name=".qrcode.QRCodeReader" />
         <activity android:name=".qrcode.PMIdInput" />
         <activity android:name=".parking.ArriveParking"></activity>
-        <activity android:name=".parking.ParkingInfo"></activity>
+        <activity android:name=".parking.ParkingInfo" />
+        <activity android:name=".FinishActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog">
+        </activity>
         <activity android:name=".Test2"></activity>
     </application>
 
