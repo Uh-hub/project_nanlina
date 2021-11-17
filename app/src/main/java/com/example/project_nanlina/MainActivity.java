@@ -714,8 +714,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String TAG_TALANG = "talang";
         String TAG_BICYCLE = "bicycle";
 
-        String TAG_BICYCLE = "bicycle";
-
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -735,7 +733,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
-                pmAdapter.addItem(new PM(name, address, number + "대"));
                 pmAdapter.addItem(new PM(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
             }
 

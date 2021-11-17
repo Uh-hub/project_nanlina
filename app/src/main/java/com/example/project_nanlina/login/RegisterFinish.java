@@ -24,7 +24,7 @@ public class RegisterFinish extends AppCompatActivity {
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ActivityLogIn.class);
                 startActivity(intent);
             }
         });
