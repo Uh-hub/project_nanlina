@@ -48,7 +48,6 @@
         <activity android:name=".FinishActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog">
         </activity>
-        <activity android:name=".Test2"></activity>
     </application>
 
 </manifest>
