@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     //앱을 실행하기 위해 필요한 퍼미션 정의
-    String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     Location mCurrentLocation;
     LatLng currentPosition;
 
@@ -241,22 +241,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
 
             startLocationUpdates();
 
-        }else {
+        } else {
 
             // 사용자가 퍼미션 거부를 한 적이 있는 경우
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
-                Snackbar. make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
                         //설명 후, 재 요청
-                        ActivityCompat.requestPermissions( MainActivity.this, REQUIRED_PERMISSIONS,
+                        ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
                 }).show();
@@ -264,20 +264,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             } else {
                 //사용자가 퍼미션을 거부한 적 없는 경우, 바로 요청
-                ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
 
         }
 
 
-
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
-                Log.d( TAG, "onMapClick :");
+                Log.d(TAG, "onMapClick :");
             }
         });
     }
@@ -316,14 +315,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     };
 
 
-
     private void startLocationUpdates() {
 
         if (!checkLocationServicesStatus()) {
 
             Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
-        }else {
+        } else {
 
             int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION);
@@ -331,9 +329,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
-
             if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
-                    hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED   ) {
+                    hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
 
                 Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
                 return;
@@ -363,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
             mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
 
-            if (map!=null)
+            if (map != null)
                 map.setMyLocationEnabled(true);
 
         }
@@ -383,8 +380,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
-
-
 
 
     public String getCurrentAddress(LatLng latlng) {
@@ -488,16 +483,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
-
         if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED   ) {
+                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
 
         return false;
 
     }
-
 
 
     /*
@@ -642,8 +635,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             if (result == null) {
                 Log.d("error", errorString);
-            }
-            else {
+            } else {
                 mJsonString = result;
                 showResult();
             }
@@ -676,8 +668,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 InputStream inputStream;
                 if (responseStatusCode == HttpURLConnection.HTTP_OK) {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else {
+                } else {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
@@ -687,15 +678,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 StringBuilder sb = new StringBuilder();
                 String line;
 
-                while((line = bufferedReader.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null) {
                     sb.append(line);
                 }
 
                 bufferedReader.close();
 
                 return sb.toString().trim();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.d(TAG2, "GetData : Error", e);
                 errorString = e.toString();
 
@@ -705,10 +695,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void showResult() {
-        String TAG_JSON = "webnautes";
+//        String TAG_JSON = "webnautes";//?
+        String TAG_JSON = "noa_on_air";
         String TAG_NAME = "name";
         String TAG_ADDRESS = "address";
         String TAG_KICKBOARD = "kickboard";
+        String TAG_ID = "id";
+        String TAG_LATITUDE = "latitude";
+        String TAG_LONGITUDE = "longitude";
+        String TAG_PHOTO = "photo";
+        String TAG_GCOOTER = "gcooter";
+        String TAG_DEER = "deer";
+        String TAG_BEAM = "beam";
+        String TAG_TALANG = "talang";
+        String TAG_BICYCLE = "bicycle";
+
 
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -725,7 +726,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 Log.v("result", name);
 
-                pmAdapter.addItem(new PM(name, address, number+"대"));
+                pmAdapter.addItem(new PM(name, address, number + "대"));
             }
 
             recyclerView.setAdapter(pmAdapter);
@@ -737,11 +738,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
                 }
             });
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
         }
     }
-
 }
+//    pulic ArrayList<String> user_info(String user_id, String user_latitude, String user_longitude){
+//
+//}
 
