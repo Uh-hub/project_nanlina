@@ -707,13 +707,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String TAG_ID = "id";
         String TAG_LATITUDE = "latitude";
         String TAG_LONGITUDE = "longitude";
-        String TAG_PHOTO = "photo";
         String TAG_GCOOTER = "gcooter";
         String TAG_DEER = "deer";
         String TAG_BEAM = "beam";
         String TAG_TALANG = "talang";
-        String TAG_BICYCLE = "bicycle";
-
         String TAG_BICYCLE = "bicycle";
 
         try {
@@ -730,13 +727,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String image = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
+                double latitude = item.getDouble(TAG_LATITUDE);
+                double longitude = item.getDouble(TAG_LONGITUDE);
+                String gcooter = item.getString(TAG_GCOOTER);
+                String deer = item.getString(TAG_DEER);
+                String beam = item.getString(TAG_BEAM);
+                String talang = item.getString(TAG_TALANG);
+                String id = item.getString(TAG_ID);
+
 
                 int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
                         + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
-                pmAdapter.addItem(new PM(name, address, number + "대"));
+//                pmAdapter.addItem(new PM(name, address, number + "대"));
                 pmAdapter.addItem(new PM(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
+
+
+                //마커 띄우기
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions
+                        .position(new LatLng(latitude, longitude))
+                        .title(name);
+
+                //마커 생성;
+                map.addMarker(markerOptions);
             }
 
             recyclerView.setAdapter(pmAdapter);
