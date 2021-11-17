@@ -785,39 +785,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //                pmAdapter.addItem(new PMItem(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
 
-                //마커 띄우기
-                //
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions
-                        .position(new LatLng(latitude, longitude))
-                        .title(name);
+//                //마커 띄우기
+//                //
+//                MarkerOptions markerOptions = new MarkerOptions();
+//                markerOptions
+//                        .position(new LatLng(latitude, longitude))
+//                        .title(name);
 
                 //마커 생성;
 
-                markerOptions.draggable(true);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                parkingMarker = map.addMarker(markerOptions);
+//                markerOptions.draggable(true);
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//                parkingMarker = map.addMarker(markerOptions);
 
             }
          //   map.setOnMarkerClickListener(markerClickListener);
 
-            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-                @Override
-                public boolean onMarkerClick(Marker marker){
-                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
-                    return false;
-                }
-            });
-
-
+//            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+//                @Override
+//                public boolean onMarkerClick(Marker marker){
+//                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
+//                    return false;
+//                }
+//            });
 
 
 //            recyclerView.setAdapter(pmAdapter);
-
-                    startActivity(intent);
-//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-                }
-            });
         } catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
         }
