@@ -1,4 +1,4 @@
-package com.example.project_nanlina;
+package com.example.project_nanlina.parking;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.example.project_nanlina.OnPMItemClickListener;
+import com.example.project_nanlina.R;
 
 import java.util.ArrayList;
 
-public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
+public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder>
         implements OnPMItemClickListener {
 
-    ArrayList<PM> items = new ArrayList<PM>();
+    ArrayList<PMItem> items = new ArrayList<PMItem>();
 
     OnPMItemClickListener listener;
 
@@ -31,7 +32,7 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        PM item = items.get(position);
+        PMItem item = items.get(position);
         viewHolder.setItem(item);
     }
 
@@ -40,19 +41,19 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
         return items.size();
     }
 
-    public void addItem(PM item) {
+    public void addItem(PMItem item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<PM> items) {
+    public void setItems(ArrayList<PMItem> items) {
         this.items = items;
     }
 
-    public PM getItem(int position) {
+    public PMItem getItem(int position) {
         return items.get(position);
     }
 
-    public void setItem(int position, PM item) {
+    public void setItem(int position, PMItem item) {
         items.set(position, item);
     }
 
@@ -67,7 +68,7 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textName;
         TextView textAddress;
         Button buttonNumber;
@@ -85,8 +86,8 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
             buttonNumber = itemView.findViewById(R.id.buttonNumber);
 
             textPhoto = itemView.findViewById(R.id.textPhoto);
-            textKickboard = itemView.findViewById(R.id.textKickboard);
-            textBicycle = itemView.findViewById(R.id.textBicycle);
+//            textKickboard = itemView.findViewById(R.id.textKickboard);
+//            textBicycle = itemView.findViewById(R.id.textBicycle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,14 +101,14 @@ public class PMAdapter extends RecyclerView.Adapter<PMAdapter.ViewHolder>
             });
         }
 
-        public void setItem(PM item) {
+        public void setItem(PMItem item) {
             textName.setText(item.getName());
             textAddress.setText(item.getAddress());
-            buttonNumber.setText(item.getNumber());
+//            buttonNumber.setText(item.getNumber());
 
             textPhoto.setText(item.getPhoto());
-            textKickboard.setText(item.getKickboard());
-            textBicycle.setText(item.getBicycle());
+//            textKickboard.setText(item.getKickboard());
+//            textBicycle.setText(item.getBicycle());
         }
 
     }

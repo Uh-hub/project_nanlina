@@ -17,37 +17,29 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 //import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-import android.provider.BaseColumns;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
-import com.example.project_nanlina.login.ActivityRegister;
+import com.example.project_nanlina.parking.PMItem;
+import com.example.project_nanlina.parking.PMListAdapter;
 import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -61,11 +53,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -81,10 +71,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
@@ -123,9 +111,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static String IP_ADDRESS = "10.0.2.2";
     private static String TAG2 = "phptest";
 
-    private PMAdapter pmAdapter;
     private String mJsonString;
+
+
+    // SQLlite 연동
     private RecyclerView recyclerView;
+    private PMListAdapter pmAdapter;
+    SQLiteDatabase database;
+
 
 
     @Override
@@ -185,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 ////////////////////////////////////////////////////////////////////////////////////////////
         // 화면 하단 주차장 정보
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
 
         // 상단 분류 버튼 (전체, 전동킥보드, 전기자전거)
         Button button1 = findViewById(R.id.button1);   // 전체
@@ -221,13 +214,63 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
-        // 주차장 정보 리사이클러뷰
+        ////// 주차장 정보 리사이클러뷰
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        MainActivity.GetData task = new MainActivity.GetData();
-        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
+        openDB();
+
+
+        // 맨 처음 초기화 데이터 보여주기 (select) - 주차장 이름, 주소, 사진, 위도, 경도는 sqllite로 가져오기
+        if (database != null) {
+            String tableName = "pm_info";
+            String query = "select id, name, address, latitude, longitude, photo from " + tableName;
+            Cursor cursor = database.rawQuery(query, null);
+            Log.v(TAG, "조회된 데이터 수 : " + cursor.getCount());
+
+            pmAdapter = new PMListAdapter();
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String address = cursor.getString(2);
+                double latitude = cursor.getDouble(3);
+                double longitude = cursor.getDouble(4);
+                String photo = cursor.getString(5);
+
+                pmAdapter.addItem(new PMItem(name, address, photo));
+
+                pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
+                    @Override
+                    public void onItemClick(PMListAdapter.ViewHolder holder, View view, int position) {
+                        PMItem item = pmAdapter.getItem(position);
+
+                        Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+                        intent.putExtra("name", item.getName());
+                        intent.putExtra("address", item.getAddress());
+                        intent.putExtra("photo", item.getPhoto());
+//                        intent.putExtra("kickboard", item.getKickboard());
+//                        intent.putExtra("bicycle", item.getBicycle());
+//                        intent.putExtra("number", item.getNumber());
+
+                        startActivity(intent);
+//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+            cursor.close();
+        }
+        else {
+            Log.e(TAG, "selectData() db없음.");
+        }
+
+        recyclerView.setAdapter(pmAdapter);
+
+
+//        MainActivity.GetData task = new MainActivity.GetData();
+//        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
     }
 
 
@@ -698,15 +741,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void showResult() {
-//        String TAG_JSON = "webnautes";//?
-        String TAG_JSON = "noa_on_air";
-        String TAG_NAME = "name";
-        String TAG_ADDRESS = "address";
-        String TAG_IMAGE = "photo";
+//        String TAG_JSON = "webnautes";  // 민서
+        String TAG_JSON = "noa_on_air";   // 유진
+//        String TAG_NAME = "name";
+//        String TAG_ADDRESS = "address";
+//        String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
-        String TAG_ID = "id";
-        String TAG_LATITUDE = "latitude";
-        String TAG_LONGITUDE = "longitude";
+//        String TAG_ID = "id";
+//        String TAG_LATITUDE = "latitude";
+//        String TAG_LONGITUDE = "longitude";
         String TAG_GCOOTER = "gcooter";
         String TAG_DEER = "deer";
         String TAG_BEAM = "beam";
@@ -717,32 +760,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
-            pmAdapter = new PMAdapter();
+            pmAdapter = new PMListAdapter();
 
             for (int i = 1; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String name = item.getString(TAG_NAME);
-                String address = item.getString(TAG_ADDRESS);
-                String image = item.getString(TAG_IMAGE);
+//                String name = item.getString(TAG_NAME);
+//                String address = item.getString(TAG_ADDRESS);
+//                String image = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
-                double latitude = item.getDouble(TAG_LATITUDE);
-                double longitude = item.getDouble(TAG_LONGITUDE);
+//                double latitude = item.getDouble(TAG_LATITUDE);
+//                double longitude = item.getDouble(TAG_LONGITUDE);
                 String gcooter = item.getString(TAG_GCOOTER);
                 String deer = item.getString(TAG_DEER);
                 String beam = item.getString(TAG_BEAM);
                 String talang = item.getString(TAG_TALANG);
-                String id = item.getString(TAG_ID);
+//                String id = item.getString(TAG_ID);
 
 
                 int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
                         + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
-//                pmAdapter.addItem(new PM(name, address, number + "대"));
-                pmAdapter.addItem(new PM(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
-
+//                pmAdapter.addItem(new PMItem(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
 
                 //마커 띄우기
                 //
@@ -771,20 +812,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-            recyclerView.setAdapter(pmAdapter);
-
-            pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
-                @Override
-                public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
-                    PM item = pmAdapter.getItem(position);
-
-                    Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
-                    intent.putExtra("name", item.getName());
-                    intent.putExtra("address", item.getAddress());
-                    intent.putExtra("photo", item.getPhoto());
-                    intent.putExtra("kickboard", item.getKickboard());
-                    intent.putExtra("bicycle", item.getBicycle());
-                    intent.putExtra("number", item.getNumber());
+//            recyclerView.setAdapter(pmAdapter);
 
                     startActivity(intent);
 //                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
@@ -792,6 +820,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             });
         } catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
+        }
+    }
+
+    public void openDB() {
+        Log.v(TAG, "openDB() 실행");
+        DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
+        database = helper.getWritableDatabase();
+
+
+        if (database != null) {
+            Log.v(TAG, "DB 열기 성공!");
+        } else {
+            Log.e(TAG, "DB 열기 실패!");
         }
     }
 }

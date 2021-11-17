@@ -47,9 +47,9 @@ public class ParkingInfo extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         String address = getIntent().getStringExtra("address");
         String photo = getIntent().getStringExtra("photo");
-        String kickboard = getIntent().getStringExtra("kickboard");
-        String bicycle = getIntent().getStringExtra("bicycle");
-        String number = getIntent().getStringExtra("number");
+//        String kickboard = getIntent().getStringExtra("kickboard");
+//        String bicycle = getIntent().getStringExtra("bicycle");
+//        String number = getIntent().getStringExtra("number");
 
         tvName = findViewById(R.id.tvName);
         tvAddress = findViewById(R.id.tvAddress);
@@ -60,15 +60,15 @@ public class ParkingInfo extends AppCompatActivity {
 
         tvName.setText(name);
         tvAddress.setText(address);
-        tvKickboard.setText(kickboard);
-        tvBicycle.setText(bicycle);
+//        tvKickboard.setText(kickboard);
+//        tvBicycle.setText(bicycle);
 
 
         // 주차 가능 자리 계산하기 (10대 주차 가능한걸로 가정)
-        int number2 = Integer.parseInt(number.replaceAll("[^0-9]",""));
-        String stVacant = Integer.toString(10 - number2);
-
-        tvVacant.setText(stVacant+"대");
+//        int number2 = Integer.parseInt(number.replaceAll("[^0-9]",""));
+//        String stVacant = Integer.toString(10 - number2);
+//
+//        tvVacant.setText(stVacant+"대");
 
 
         // Glide로 이미지 표시하기
