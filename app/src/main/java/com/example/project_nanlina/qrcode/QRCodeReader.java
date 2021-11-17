@@ -22,6 +22,8 @@ public class QRCodeReader extends AppCompatActivity {
 
     private IntentIntegrator qrScan;
 
+    public static String useID;   // QR 코드에서 읽어온 PM ID!!!
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +71,14 @@ public class QRCodeReader extends AppCompatActivity {
                 try {
                     // data를 json으로 변환
                     JSONObject obj = new JSONObject(result.getContents());
+                    useID = obj.getString("id");
                     //textViewId.setText(obj.getString("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     //textViewResult.setText(result.getContents());
                 }
+
+                ////// 스캔후 이용중 화면으로 이동하는 걸로 변경!!!
             }
         }
         else {

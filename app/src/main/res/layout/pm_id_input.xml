@@ -52,7 +52,7 @@
                 android:background="#BDBDBD"/>
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/inputPMID"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="30dp"
@@ -64,7 +64,7 @@
                 android:textColor="#817979"
                 android:fontFamily="@font/nanum_square_b"
                 android:inputType="textPersonName"
-                android:text="   ID 입력" />
+                android:text="ID 입력" />
 
             <View
                 android:layout_width="match_parent"
