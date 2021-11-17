@@ -179,7 +179,7 @@ public class Test2 extends AppCompatActivity {
         String TAG_JSON = "webnautes";
         String TAG_NAME = "name";
         String TAG_ADDRESS = "address";
-        String TAG_IMAGE = "image";
+        String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
         String TAG_BICYCLE = "bicycle";
 
@@ -198,12 +198,11 @@ public class Test2 extends AppCompatActivity {
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
 
-//                int number = Integer.parseInt(kickboard) + Integer.parseInt(bicycle);
-//                String number2 = Integer.toString(number);
+                int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
+                        + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
+                String stNumber = Integer.toString(number);
 
-                Log.v("result", name);
-
-                pmAdapter.addItem(new PM(name, address, kickboard+"대"));
+                pmAdapter.addItem(new PM(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
             }
 
             recyclerView.setAdapter(pmAdapter);
@@ -216,7 +215,10 @@ public class Test2 extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
-                    intent.putExtra("kickboard", item.getNumber());
+                    intent.putExtra("photo", item.getPhoto());
+                    intent.putExtra("kickboard", item.getKickboard());
+                    intent.putExtra("bicycle", item.getBicycle());
+                    intent.putExtra("number", item.getNumber());
 
                     startActivity(intent);
 //                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();

@@ -47,6 +47,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
+import com.example.project_nanlina.login.ActivityRegister;
+import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -168,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 // 로그아웃하기
                 mFirebaseAuth.signOut();
+                Toast.makeText(MainActivity.this, "로그아웃되었습니다", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity.this, ActivityLogIn.class);
                 startActivity(intent);
@@ -699,6 +702,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String TAG_JSON = "noa_on_air";
         String TAG_NAME = "name";
         String TAG_ADDRESS = "address";
+        String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
         String TAG_ID = "id";
         String TAG_LATITUDE = "latitude";
@@ -710,6 +714,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String TAG_TALANG = "talang";
         String TAG_BICYCLE = "bicycle";
 
+        String TAG_BICYCLE = "bicycle";
 
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -722,11 +727,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 String name = item.getString(TAG_NAME);
                 String address = item.getString(TAG_ADDRESS);
-                String number = item.getString(TAG_KICKBOARD);
+                String image = item.getString(TAG_IMAGE);
+                String kickboard = item.getString(TAG_KICKBOARD);
+                String bicycle = item.getString(TAG_BICYCLE);
 
-                Log.v("result", name);
+                int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
+                        + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
+                String stNumber = Integer.toString(number);
 
                 pmAdapter.addItem(new PM(name, address, number + "대"));
+                pmAdapter.addItem(new PM(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
             }
 
             recyclerView.setAdapter(pmAdapter);
@@ -735,7 +745,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void onItemClick(PMAdapter.ViewHolder holder, View view, int position) {
                     PM item = pmAdapter.getItem(position);
-                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+                    intent.putExtra("name", item.getName());
+                    intent.putExtra("address", item.getAddress());
+                    intent.putExtra("photo", item.getPhoto());
+                    intent.putExtra("kickboard", item.getKickboard());
+                    intent.putExtra("bicycle", item.getBicycle());
+                    intent.putExtra("number", item.getNumber());
+
+                    startActivity(intent);
+//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
                 }
             });
         } catch (JSONException e) {

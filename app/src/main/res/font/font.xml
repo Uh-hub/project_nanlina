@@ -21,4 +21,9 @@
         android:fontWeight="400"
         android:fontStyle="normal" />
 
+    <font
+        android:font="@font/nanum_barun_gothic"
+        android:fontWeight="400"
+        android:fontStyle="normal" />
+
 </font-family>

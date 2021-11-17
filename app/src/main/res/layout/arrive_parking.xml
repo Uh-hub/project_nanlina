@@ -58,7 +58,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="130dp"
+                android:layout_marginTop="100dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginBottom="15dp"
                 android:text="주차장에 도착했습니다"
@@ -87,6 +87,17 @@
                 android:fontFamily="@font/nanum_square_eb"
                 android:textSize="30dp"
                 android:textColor="@color/black"/>
+
+            <Button
+                android:id="@+id/btn_finish2"
+                android:layout_width="160dp"
+                android:layout_height="55dp"
+                android:layout_marginLeft="40dp"
+                android:fontFamily="@font/nanum_square_b"
+                android:textColor="@color/white"
+                android:background="@drawable/button5"
+                android:textSize="25dp"
+                android:text="주차완료" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

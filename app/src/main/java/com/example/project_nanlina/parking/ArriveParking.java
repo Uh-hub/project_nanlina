@@ -1,14 +1,17 @@
 package com.example.project_nanlina.parking;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.project_nanlina.FinishActivity;
 import com.example.project_nanlina.R;
 
 public class ArriveParking extends AppCompatActivity {
@@ -22,6 +25,8 @@ public class ArriveParking extends AppCompatActivity {
     AnimationDrawable ani1;
     AnimationDrawable ani2;
     AnimationDrawable ani3;
+
+    Button finish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,17 @@ public class ArriveParking extends AppCompatActivity {
         ani1.start();
         ani2.start();
         ani3.start();
+
+
+        finish = findViewById(R.id.btn_finish2);
+        finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FinishActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
