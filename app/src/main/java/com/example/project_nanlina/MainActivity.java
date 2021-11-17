@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     SQLiteDatabase database;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -260,7 +261,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 });
             }
             cursor.close();
-        } else {
+        }
+        else {
             Log.e(TAG, "selectData() db없음.");
         }
 
@@ -763,13 +765,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (int i = 1; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String name = item.getString(TAG_NAME);
-                String address = item.getString(TAG_ADDRESS);
-                String image = item.getString(TAG_IMAGE);
+//                String name = item.getString(TAG_NAME);
+//                String address = item.getString(TAG_ADDRESS);
+//                String image = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
-                double latitude = item.getDouble(TAG_LATITUDE);
-                double longitude = item.getDouble(TAG_LONGITUDE);
+//                double latitude = item.getDouble(TAG_LATITUDE);
+//                double longitude = item.getDouble(TAG_LONGITUDE);
                 String gcooter = item.getString(TAG_GCOOTER);
                 String deer = item.getString(TAG_DEER);
                 String beam = item.getString(TAG_BEAM);
@@ -777,56 +779,53 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                String id = item.getString(TAG_ID);
 
 
-                int number = Integer.parseInt(kickboard.replaceAll("[^0-9]", ""))
-                        + Integer.parseInt(bicycle.replaceAll("[^0-9]", ""));
+                int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
+                        + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
 //                pmAdapter.addItem(new PMItem(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
 
-                //마커 띄우기
-                //
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions
-                        .position(new LatLng(latitude, longitude))
-                        .title(name);
+//                //마커 띄우기
+//                //
+//                MarkerOptions markerOptions = new MarkerOptions();
+//                markerOptions
+//                        .position(new LatLng(latitude, longitude))
+//                        .title(name);
 
                 //마커 생성;
 
-                markerOptions.draggable(true);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                parkingMarker = map.addMarker(markerOptions);
+//                markerOptions.draggable(true);
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+//                parkingMarker = map.addMarker(markerOptions);
 
             }
-            //   map.setOnMarkerClickListener(markerClickListener);
+         //   map.setOnMarkerClickListener(markerClickListener);
 
-            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
-                    return false;
-                }
-            });
+//            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+//                @Override
+//                public boolean onMarkerClick(Marker marker){
+//                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
+//                    return false;
+//                }
+//            });
+
 
 //            recyclerView.setAdapter(pmAdapter);
-
-            startActivity(intent);
-//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-
         } catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
         }
+    }
 
-        public void openDB() {
-            Log.v(TAG, "openDB() 실행");
-            DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
-            database = helper.getWritableDatabase();
+    public void openDB() {
+        Log.v(TAG, "openDB() 실행");
+        DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
+        database = helper.getWritableDatabase();
 
 
-            if (database != null) {
-                Log.v(TAG, "DB 열기 성공!");
-            } else {
-                Log.e(TAG, "DB 열기 실패!");
-            }
+        if (database != null) {
+            Log.v(TAG, "DB 열기 성공!");
+        } else {
+            Log.e(TAG, "DB 열기 실패!");
         }
     }
 }
