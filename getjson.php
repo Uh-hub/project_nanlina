@@ -5,7 +5,7 @@
 
     include('dbcon.php');
 
-    $stmt = $con->prepare('select * from pm_info2');
+    $stmt = $con->prepare('select * from pm_info');
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {

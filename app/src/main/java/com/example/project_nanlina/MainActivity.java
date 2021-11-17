@@ -1,23 +1,23 @@
 package com.example.project_nanlina;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
+//import androidx.appcompat.app.ActionBar;
+//import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+//import androidx.core.view.GravityCompat;
+//import androidx.drawerlayout.widget.DrawerLayout;
+//import androidx.fragment.app.Fragment;
 
 import android.Manifest;
-import android.app.Activity;
+//import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+//import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //지도랑 마커 표시
     private GoogleMap map;
     private Marker currentMarker = null;
-
+    public Marker parkingMarker;
     double longitude;
     double latitude;
 
@@ -745,14 +745,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                 //마커 띄우기
+                //
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions
                         .position(new LatLng(latitude, longitude))
                         .title(name);
 
                 //마커 생성;
-                map.addMarker(markerOptions);
+
+                markerOptions.draggable(true);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                parkingMarker = map.addMarker(markerOptions);
+
             }
+         //   map.setOnMarkerClickListener(markerClickListener);
+
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+                @Override
+                public boolean onMarkerClick(Marker marker){
+                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
+                    return false;
+                }
+            });
+
+
+
 
             recyclerView.setAdapter(pmAdapter);
 
