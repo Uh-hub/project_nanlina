@@ -53,6 +53,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -71,6 +72,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -82,9 +84,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //지도랑 마커 표시
     private GoogleMap map;
     private Marker currentMarker = null;
-    public Marker parkingMarker;
-    double longitude;
-    double latitude;
+    public Marker parkingMarker = null;
+
 
     private static final String TAG = "googlemap_example";
     private static final int GPS_ENABLE_REQUEST_CODE = 2001;
@@ -231,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             pmAdapter = new PMListAdapter();
 
+            //위도 경도 정보 넘기기 위한 array 생성
+            ArrayList latitudeList = new ArrayList<Double>();
+            ArrayList longitudeList = new ArrayList<Double>();
+
+
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
                 int id = cursor.getInt(0);
@@ -239,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 double latitude = cursor.getDouble(3);
                 double longitude = cursor.getDouble(4);
                 String photo = cursor.getString(5);
+
 
                 pmAdapter.addItem(new PMItem(name, address, photo));
 
@@ -269,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         recyclerView.setAdapter(pmAdapter);
 
 
-//        MainActivity.GetData task = new MainActivity.GetData();
+        MainActivity.GetData task = new MainActivity.GetData();
 //        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
     }
 
@@ -317,6 +324,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+        // 맨 처음 초기화 데이터 보여주기 (select) - 주차장 이름, 주소, 사진, 위도, 경도는 sqllite로 가져오기
+        if (database != null) {
+            String tableName = "pm_info";
+            String query = "select id, name, address, latitude, longitude, photo from " + tableName;
+            Cursor cursor = database.rawQuery(query, null);
+            Log.v(TAG, "조회된 데이터 수 : " + cursor.getCount());
+
+            pmAdapter = new PMListAdapter();
+
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String address = cursor.getString(2);
+                double latitude = cursor.getDouble(3);
+                double longitude = cursor.getDouble(4);
+                String photo = cursor.getString(5);
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions
+                        .position(new LatLng(latitude, longitude))
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
+                map.addMarker(markerOptions);
+
+
+            }
+        }
         map.getUiSettings().setMyLocationButtonEnabled(true);
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -483,6 +519,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentLatLng);
         markerOptions.title(markerTitle);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
         markerOptions.snippet(markerSnippet);
         markerOptions.draggable(true);
 
@@ -741,15 +778,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void showResult() {
-//        String TAG_JSON = "webnautes";  // 민서
-        String TAG_JSON = "noa_on_air";   // 유진
-//        String TAG_NAME = "name";
-//        String TAG_ADDRESS = "address";
-//        String TAG_IMAGE = "photo";
+        String TAG_JSON = "webnautes";  // 민서
+//        String TAG_JSON = "noa_on_air";   // 유진
+        String TAG_NAME = "name";
+        String TAG_ADDRESS = "address";
+        String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
-//        String TAG_ID = "id";
-//        String TAG_LATITUDE = "latitude";
-//        String TAG_LONGITUDE = "longitude";
+        String TAG_ID = "id";
+        String TAG_LATITUDE = "latitude";
+        String TAG_LONGITUDE = "longitude";
         String TAG_GCOOTER = "gcooter";
         String TAG_DEER = "deer";
         String TAG_BEAM = "beam";
@@ -765,49 +802,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (int i = 1; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
-//                String name = item.getString(TAG_NAME);
-//                String address = item.getString(TAG_ADDRESS);
-//                String image = item.getString(TAG_IMAGE);
+                String name = item.getString(TAG_NAME);
+                String address = item.getString(TAG_ADDRESS);
+                String image = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
-//                double latitude = item.getDouble(TAG_LATITUDE);
-//                double longitude = item.getDouble(TAG_LONGITUDE);
+                double latitude = item.getDouble(TAG_LATITUDE);
+                double longitude = item.getDouble(TAG_LONGITUDE);
                 String gcooter = item.getString(TAG_GCOOTER);
                 String deer = item.getString(TAG_DEER);
                 String beam = item.getString(TAG_BEAM);
                 String talang = item.getString(TAG_TALANG);
-//                String id = item.getString(TAG_ID);
+                String id = item.getString(TAG_ID);
+
 
 
                 int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
                         + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
-//                pmAdapter.addItem(new PMItem(name, address, image, kickboard+"대", bicycle.trim()+"대", stNumber+"대"));
 
-//                //마커 띄우기
-//                //
-//                MarkerOptions markerOptions = new MarkerOptions();
-//                markerOptions
-//                        .position(new LatLng(latitude, longitude))
-//                        .title(name);
+
+
 
                 //마커 생성;
 
-//                markerOptions.draggable(true);
-//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-//                parkingMarker = map.addMarker(markerOptions);
+
 
             }
-         //   map.setOnMarkerClickListener(markerClickListener);
-
-//            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
-//                @Override
-//                public boolean onMarkerClick(Marker marker){
-//                    Toast.makeText(MainActivity.this, "성공", Toast.LENGTH_LONG);
-//                    return false;
-//                }
-//            });
 
 
 //            recyclerView.setAdapter(pmAdapter);
