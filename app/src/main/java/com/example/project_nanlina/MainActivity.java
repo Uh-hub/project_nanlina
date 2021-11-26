@@ -854,4 +854,3 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //    pulic ArrayList<String> user_info(String user_id, String user_latitude, String user_longitude){
 //
 //}
-
