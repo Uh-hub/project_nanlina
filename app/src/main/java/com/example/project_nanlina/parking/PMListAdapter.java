@@ -86,8 +86,8 @@ public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder
             buttonNumber = itemView.findViewById(R.id.buttonNumber);
 
             textPhoto = itemView.findViewById(R.id.textPhoto);
-//            textKickboard = itemView.findViewById(R.id.textKickboard);
-//            textBicycle = itemView.findViewById(R.id.textBicycle);
+            textKickboard = itemView.findViewById(R.id.textKickboard);
+            textBicycle = itemView.findViewById(R.id.textBicycle);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,11 +104,11 @@ public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder
         public void setItem(PMItem item) {
             textName.setText(item.getName());
             textAddress.setText(item.getAddress());
-//            buttonNumber.setText(item.getNumber());
+            buttonNumber.setText(item.getNumber() + "대");
 
             textPhoto.setText(item.getPhoto());
-//            textKickboard.setText(item.getKickboard());
-//            textBicycle.setText(item.getBicycle());
+            textKickboard.setText(item.getKickboard());
+            textBicycle.setText(item.getBicycle());
         }
 
     }

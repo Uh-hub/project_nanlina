@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
 import com.example.project_nanlina.parking.PMItem;
+import com.example.project_nanlina.parking.PMItem2;
 import com.example.project_nanlina.parking.PMListAdapter;
 import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -247,25 +248,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String photo = cursor.getString(5);
 
 
-                pmAdapter.addItem(new PMItem(name, address, photo));
-
-                pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
-                    @Override
-                    public void onItemClick(PMListAdapter.ViewHolder holder, View view, int position) {
-                        PMItem item = pmAdapter.getItem(position);
-
-                        Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
-                        intent.putExtra("name", item.getName());
-                        intent.putExtra("address", item.getAddress());
-                        intent.putExtra("photo", item.getPhoto());
-//                        intent.putExtra("kickboard", item.getKickboard());
-//                        intent.putExtra("bicycle", item.getBicycle());
-//                        intent.putExtra("number", item.getNumber());
-
-                        startActivity(intent);
-//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-                    }
-                });
+//                pmAdapter.addItem(new PMItem(name, address, photo));
+//
+//                pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
+//                    @Override
+//                    public void onItemClick(PMListAdapter.ViewHolder holder, View view, int position) {
+//                        PMItem item = pmAdapter.getItem(position);
+//
+//                        Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+//                        intent.putExtra("name", item.getName());
+//                        intent.putExtra("address", item.getAddress());
+//                        intent.putExtra("photo", item.getPhoto());
+////                        intent.putExtra("kickboard", item.getKickboard());
+////                        intent.putExtra("bicycle", item.getBicycle());
+////                        intent.putExtra("number", item.getNumber());
+//
+//                        startActivity(intent);
+////                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+//                    }
+//                });
             }
             cursor.close();
         }
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         MainActivity.GetData task = new MainActivity.GetData();
-//        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
+        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
     }
 
 
@@ -780,13 +781,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void showResult() {
         String TAG_JSON = "webnautes";  // 민서
 //        String TAG_JSON = "noa_on_air";   // 유진
-        String TAG_NAME = "name";
-        String TAG_ADDRESS = "address";
-        String TAG_IMAGE = "photo";
+//        String TAG_NAME = "name";
+//        String TAG_ADDRESS = "address";
+//        String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
         String TAG_ID = "id";
-        String TAG_LATITUDE = "latitude";
-        String TAG_LONGITUDE = "longitude";
+//        String TAG_LATITUDE = "latitude";
+//        String TAG_LONGITUDE = "longitude";
         String TAG_GCOOTER = "gcooter";
         String TAG_DEER = "deer";
         String TAG_BEAM = "beam";
@@ -802,13 +803,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             for (int i = 1; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
-                String name = item.getString(TAG_NAME);
-                String address = item.getString(TAG_ADDRESS);
-                String image = item.getString(TAG_IMAGE);
+//                String name = item.getString(TAG_NAME);
+//                String address = item.getString(TAG_ADDRESS);
+//                String image = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
-                double latitude = item.getDouble(TAG_LATITUDE);
-                double longitude = item.getDouble(TAG_LONGITUDE);
+//                double latitude = item.getDouble(TAG_LATITUDE);
+//                double longitude = item.getDouble(TAG_LONGITUDE);
                 String gcooter = item.getString(TAG_GCOOTER);
                 String deer = item.getString(TAG_DEER);
                 String beam = item.getString(TAG_BEAM);
@@ -821,18 +822,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
                 String stNumber = Integer.toString(number);
 
-
-
-
-
-                //마커 생성;
-
-
-
             }
-
-
-//            recyclerView.setAdapter(pmAdapter);
+            recyclerView.setAdapter(pmAdapter);
         } catch (JSONException e) {
             Log.d(TAG2, "showResult : ", e);
         }

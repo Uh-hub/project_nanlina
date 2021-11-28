@@ -4,17 +4,17 @@ public class PMItem {
     String name;
     String address;
     String photo;
-    int kickboard;
-    int bicycle;
-    int number;
+    String kickboard;
+    String bicycle;
+    String number;
 
-    public PMItem(String name, String address, String photo) {
+    public PMItem(String name, String address, String photo, String kickboard, String bicycle, String number) {
         this.name = name;
         this.address = address;
         this.photo = photo;
-//        this.kickboard = kickboard;
-//        this.bicycle = bicycle;
-//        this.number = number;
+        this.kickboard = kickboard;
+        this.bicycle = bicycle;
+        this.number = number;
     }
 
     public String getName() {
@@ -41,27 +41,27 @@ public class PMItem {
         this.photo = photo;
     }
 
-//    public int getKickboard() {
-//        return kickboard;
-//    }
-//
-//    public void setKickboard(int kickboard) {
-//        this.kickboard = kickboard;
-//    }
-//
-//    public int getBicycle() {
-//        return bicycle;
-//    }
-//
-//    public void setBicycle(int bicycle) {
-//        this.bicycle = bicycle;
-//    }
-//
-//    public int getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(int number) {
-//        this.number = number;
-//    }
+    public String getKickboard() {
+        return kickboard;
+    }
+
+    public void setKickboard(String kickboard) {
+        this.kickboard = kickboard;
+    }
+
+    public String getBicycle() {
+        return bicycle;
+    }
+
+    public void setBicycle(String bicycle) {
+        this.bicycle = bicycle;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }

@@ -16,9 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project_NanlinA.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".find_way"
-            android:exported="true" />
+<!--        <activity-->
+<!--            android:name=".find_way"-->
+<!--            android:exported="true" />-->
         <activity
             android:name=".map_permission"
             android:exported="true" />
@@ -51,6 +51,7 @@
         <activity
             android:name=".FinishActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+        <activity android:name=".ConnectionTest"></activity>
     </application>
 
 </manifest>
