@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.qrcode.PMIdInput;
 import com.example.project_nanlina.qrcode.QRCodeReader;
 
 public class ParkingInfo extends AppCompatActivity {
@@ -51,6 +52,7 @@ public class ParkingInfo extends AppCompatActivity {
         String bicycle = getIntent().getStringExtra("bicycle");
         String number = getIntent().getStringExtra("number");
 
+
         tvName = findViewById(R.id.tvName);
         tvAddress = findViewById(R.id.tvAddress);
         imageView = findViewById(R.id.imageView);
@@ -63,6 +65,8 @@ public class ParkingInfo extends AppCompatActivity {
         tvKickboard.setText(kickboard + "대");
         tvBicycle.setText(bicycle.trim() + "대");
 
+        Intent intent = new Intent(getApplicationContext(), PMIdInput.class);
+        intent.putExtra("name", name);
 
         // 주차 가능 자리 계산하기 (10대 주차 가능한걸로 가정)
         int number2 = Integer.parseInt(number.replaceAll("[^0-9]",""));

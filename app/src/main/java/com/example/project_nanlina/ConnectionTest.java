@@ -1,12 +1,8 @@
 package com.example.project_nanlina;
 
-import androidx.annotation.NonNull;
 //import androidx.appcompat.app.ActionBar;
 //import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 //import androidx.core.view.GravityCompat;
 //import androidx.drawerlayout.widget.DrawerLayout;
 //import androidx.fragment.app.Fragment;
@@ -14,20 +10,13 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 //import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+        import android.content.Intent;
+        import android.database.sqlite.SQLiteDatabase;
 //import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
+        import android.location.Location;
+        import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
+        import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -39,43 +28,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
 import com.example.project_nanlina.parking.PMItem;
-import com.example.project_nanlina.parking.PMItem2;
 import com.example.project_nanlina.parking.PMListAdapter;
 import com.example.project_nanlina.parking.ParkingInfo;
+import com.example.project_nanlina.qrcode.PMIdInput;
+import com.example.project_nanlina.qrcode.QRCodeReader;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
+        import com.google.android.gms.location.LocationRequest;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
+        import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 
 public class ConnectionTest extends AppCompatActivity {
@@ -365,8 +338,8 @@ public class ConnectionTest extends AppCompatActivity {
         String TAG_IMAGE = "photo";
         String TAG_KICKBOARD = "kickboard";
         String TAG_ID = "id";
-//        String TAG_LATITUDE = "latitude";
-//        String TAG_LONGITUDE = "longitude";
+        String TAG_LATITUDE = "latitude";
+        String TAG_LONGITUDE = "longitude";
         String TAG_GCOOTER = "gcooter";
         String TAG_DEER = "deer";
         String TAG_BEAM = "beam";
@@ -387,8 +360,8 @@ public class ConnectionTest extends AppCompatActivity {
                 String photo = item.getString(TAG_IMAGE);
                 String kickboard = item.getString(TAG_KICKBOARD);
                 String bicycle = item.getString(TAG_BICYCLE);
-//                double latitude = item.getDouble(TAG_LATITUDE);
-//                double longitude = item.getDouble(TAG_LONGITUDE);
+                double latitude = item.getDouble(TAG_LATITUDE);
+                double longitude = item.getDouble(TAG_LONGITUDE);
                 String gcooter = item.getString(TAG_GCOOTER);
                 String deer = item.getString(TAG_DEER);
                 String beam = item.getString(TAG_BEAM);
@@ -411,6 +384,7 @@ public class ConnectionTest extends AppCompatActivity {
                         PMItem item = pmAdapter.getItem(position);
 
                         Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+
                         intent.putExtra("name", item.getName());
                         intent.putExtra("address", item.getAddress());
                         intent.putExtra("photo", item.getPhoto());
