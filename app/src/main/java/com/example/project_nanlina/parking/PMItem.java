@@ -8,13 +8,13 @@ public class PMItem {
     String bicycle;
     String number;
 
-    public PMItem(String name, String address, String photo, String kickboard, String bicycle, String number) {
+    public PMItem(String name, String address, String photo) {
         this.name = name;
         this.address = address;
         this.photo = photo;
-        this.kickboard = kickboard;
-        this.bicycle = bicycle;
-        this.number = number;
+//        this.kickboard = kickboard;
+//        this.bicycle = bicycle;
+//        this.number = number;
     }
 
     public String getName() {

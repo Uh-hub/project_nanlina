@@ -20,25 +20,33 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 //import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.login.ActivityLogIn;
+import com.example.project_nanlina.parking.PMItem;
 import com.example.project_nanlina.parking.PMListAdapter;
+import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -56,6 +64,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.skt.Tmap.TMapData;
+import com.skt.Tmap.TMapGpsManager;
+import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapPolyLine;
+import com.skt.Tmap.TMapView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,82 +87,64 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback {
+//유진아 혹시 이 코드를 나중에 볼까봐 적어
+//구글맵을 티맵으로 바꿨고 길찾기 경로랑 사용자 현재 위치 나오게 하는 기능 구현했어!
+//어차피 깃허브에 기록 있으니까 너가 쓴 코드는 지웠어ㅠㅠ 티맵 인증키 쉽게 받을 수 있으니까 받아서 너걸로 바꾸면 돼
+public class MainActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
 
     private FirebaseAuth mFirebaseAuth;
-
-    //지도랑 마커 표시
-    private GoogleMap map;
-    private Marker currentMarker = null;
-    public Marker parkingMarker = null;
-
-
-    private static final String TAG = "googlemap_example";
-    private static final int GPS_ENABLE_REQUEST_CODE = 2001;
-    private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
-    boolean needRequest = false;
-
-
-    //앱을 실행하기 위해 필요한 퍼미션 정의
-    String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-    Location mCurrentLocation;
-    LatLng currentPosition;
-
-
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
-    private Location location;
-
     private View mLayout; // Snackbar 사용하기 위해 View 필요
-
 
     // MySQL 연동
     private static String IP_ADDRESS = "10.0.2.2";
     private static String TAG2 = "phptest";
-
     private String mJsonString;
-
 
     // SQLlite 연동
     private RecyclerView recyclerView;
     private PMListAdapter pmAdapter;
     SQLiteDatabase database;
 
+    TMapView tMapView = null; // T map View
+    TMapGpsManager tMapGPS = null; // GPS 사용
+    TMapData tMapData = null;
+    TMapPoint start = null;
 
+    @Override
+    public void onLocationChange(Location location) {
+        tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
+        tMapView.setCenterPoint(location.getLongitude(), location.getLatitude());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-
         setContentView(R.layout.activity_main);
 
-        mLayout = findViewById(R.id.layout_main);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayoutTmap);
+        tMapView = new TMapView(this); // T map View
+        linearLayout.addView(tMapView);
+        tMapView.setSKTMapApiKey("l7xxd4933c1088df4195a25e3e31de55d514");
 
-        locationRequest = new LocationRequest()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(UPDATE_INTERVAL_MS)
-                .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+        tMapGPS = new TMapGpsManager(this); // GPS 사용
 
-        LocationSettingsRequest.Builder builder =
-                new LocationSettingsRequest.Builder();
+        tMapView.setZoomLevel(17);
+        tMapView.setIconVisibility(true);
+        tMapView.setMapType(TMapView.MAPTYPE_STANDARD);
+        tMapView.setLanguage(TMapView.LANGUAGE_KOREAN); // 한국어 사용
 
-        builder.addLocationRequest(locationRequest);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
+        tMapGPS.setMinTime(1000);
+        tMapGPS.setMinDistance(10);
+        tMapGPS.setProvider(tMapGPS.NETWORK_PROVIDER);
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        tMapGPS.OpenGps();
 
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        tMapView.setTrackingMode(true);
+        tMapView.setSightVisible(true);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
         // 로그인 기능
@@ -172,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //회원 탈퇴
 //         mFirebaseAuth.getCurrentUser().delete();
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////
         // 화면 하단 주차장 정보
@@ -219,20 +214,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         openDB();
 
-
         // 맨 처음 초기화 데이터 보여주기 (select) - 주차장 이름, 주소, 사진, 위도, 경도는 sqllite로 가져오기
         if (database != null) {
             String tableName = "pm_info";
             String query = "select id, name, address, latitude, longitude, photo from " + tableName;
             Cursor cursor = database.rawQuery(query, null);
-            Log.v(TAG, "조회된 데이터 수 : " + cursor.getCount());
+            Log.v("test", "조회된 데이터 수 : " + cursor.getCount());
 
             pmAdapter = new PMListAdapter();
-
-            //위도 경도 정보 넘기기 위한 array 생성
-            ArrayList latitudeList = new ArrayList<Double>();
-            ArrayList longitudeList = new ArrayList<Double>();
-
 
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
@@ -243,601 +232,74 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 double longitude = cursor.getDouble(4);
                 String photo = cursor.getString(5);
 
+                // 주차장 위치에 마커 띄우기
+                TMapMarkerItem mapMarkerItem = new TMapMarkerItem();
+                TMapPoint tMapPoint = new TMapPoint(latitude, longitude);
+                Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.poi_dot);
+                mapMarkerItem.setIcon(bitmap);
+                mapMarkerItem.setPosition(0.5f, 1.0f);
+                mapMarkerItem.setTMapPoint(tMapPoint);
+                tMapView.addMarkerItem("markerItem" + i, mapMarkerItem);
 
-//                pmAdapter.addItem(new PMItem(name, address, photo));
-//
-//                pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
-//                    @Override
-//                    public void onItemClick(PMListAdapter.ViewHolder holder, View view, int position) {
-//                        PMItem item = pmAdapter.getItem(position);
-//
-//                        Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
-//                        intent.putExtra("name", item.getName());
-//                        intent.putExtra("address", item.getAddress());
-//                        intent.putExtra("photo", item.getPhoto());
-////                        intent.putExtra("kickboard", item.getKickboard());
-////                        intent.putExtra("bicycle", item.getBicycle());
-////                        intent.putExtra("number", item.getNumber());
-//
-//                        startActivity(intent);
-////                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
-//                    }
-//                });
+                pmAdapter.addItem(new PMItem(name, address, photo));
+
+                pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
+                    @Override
+                    public void onItemClick(PMListAdapter.ViewHolder holder, View view, int position) {
+                        PMItem item = pmAdapter.getItem(position);
+
+                        Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+                        intent.putExtra("name", item.getName());
+                        intent.putExtra("address", item.getAddress());
+                        intent.putExtra("photo", item.getPhoto());
+//                        intent.putExtra("kickboard", item.getKickboard());
+//                        intent.putExtra("bicycle", item.getBicycle());
+//                        intent.putExtra("number", item.getNumber());
+
+                        startActivity(intent);
+//                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             cursor.close();
-        }
-        else {
-            Log.e(TAG, "selectData() db없음.");
+        } else {
+            Log.e("test", "selectData() db없음.");
         }
 
         recyclerView.setAdapter(pmAdapter);
 
-
-        MainActivity.GetData task = new MainActivity.GetData();
-        task.execute("http://" + IP_ADDRESS + "/getjson.php", "");
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                start = tMapView.getCenterPoint();
+//                drawPath();
+//            }
+//        }, 5000);
     }
 
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        this.map = googleMap;
-        Log.d(TAG, "onMapReady :");
-
-        setDefaultLocation();
-
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-
-            startLocationUpdates();
-
-        } else {
-
-            // 사용자가 퍼미션 거부를 한 적이 있는 경우
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
-
-                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
-                        Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        //설명 후, 재 요청
-                        ActivityCompat.requestPermissions(MainActivity.this, REQUIRED_PERMISSIONS,
-                                PERMISSIONS_REQUEST_CODE);
-                    }
-                }).show();
-
-
-            } else {
-                //사용자가 퍼미션을 거부한 적 없는 경우, 바로 요청
-                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS,
-                        PERMISSIONS_REQUEST_CODE);
-            }
-
-        }
-
-
-        // 맨 처음 초기화 데이터 보여주기 (select) - 주차장 이름, 주소, 사진, 위도, 경도는 sqllite로 가져오기
-        if (database != null) {
-            String tableName = "pm_info";
-            String query = "select id, name, address, latitude, longitude, photo from " + tableName;
-            Cursor cursor = database.rawQuery(query, null);
-            Log.v(TAG, "조회된 데이터 수 : " + cursor.getCount());
-
-            pmAdapter = new PMListAdapter();
-
-
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToNext();
-                int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String address = cursor.getString(2);
-                double latitude = cursor.getDouble(3);
-                double longitude = cursor.getDouble(4);
-                String photo = cursor.getString(5);
-
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions
-                        .position(new LatLng(latitude, longitude))
-                        .title(name)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker));
-                map.addMarker(markerOptions);
-
-
-            }
-        }
-        map.getUiSettings().setMyLocationButtonEnabled(true);
-        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-                Log.d(TAG, "onMapClick :");
-            }
-        });
-    }
-
-    LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(LocationResult locationResult) {
-            super.onLocationResult(locationResult);
-
-            List<Location> locationList = locationResult.getLocations();
-
-            if (locationList.size() > 0) {
-                location = locationList.get(locationList.size() - 1);
-
-                currentPosition
-                        = new LatLng(location.getLatitude(), location.getLongitude());
-
-
-                String markerTitle = getCurrentAddress(currentPosition);
-                String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
-                        + " 경도:" + String.valueOf(location.getLongitude());
-
-
-                Log.d(TAG, "onLocationResult : " + markerSnippet);
-
-
-                //현재 위치에 마커 생성하고 이동
-                setCurrentLocation(location, markerTitle, markerSnippet);
-
-                mCurrentLocation = location;
-            }
-
-
-        }
-
-    };
-
-
-    private void startLocationUpdates() {
-
-        if (!checkLocationServicesStatus()) {
-
-            Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
-            showDialogForLocationServiceSetting();
-        } else {
-
-            int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-
-
-            if (hasFineLocationPermission != PackageManager.PERMISSION_GRANTED ||
-                    hasCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
-
-                Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
-                return;
-            }
-
-
-            Log.d(TAG, "startLocationUpdates : call mFusedLocationClient.requestLocationUpdates");
-
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
-            if (checkPermission())
-                map.setMyLocationEnabled(true);
-
-        }
-
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Log.d(TAG, "onStart");
-
-        if (checkPermission()) {
-
-            Log.d(TAG, "onStart : call mFusedLocationClient.requestLocationUpdates");
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
-
-            if (map != null)
-                map.setMyLocationEnabled(true);
-
-        }
-
-
-    }
-
-
-    @Override
-    protected void onStop() {
-
-        super.onStop();
-
-        if (mFusedLocationClient != null) {
-
-            Log.d(TAG, "onStop : call stopLocationUpdates");
-            mFusedLocationClient.removeLocationUpdates(locationCallback);
-        }
-    }
-
-
-    public String getCurrentAddress(LatLng latlng) {
-
-        //지오코더 GPS를 주소로 변환
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        List<Address> addresses;
-
-        try {
-
-            addresses = geocoder.getFromLocation(
-                    latlng.latitude,
-                    latlng.longitude,
-                    1);
-        } catch (IOException ioException) {
-            //네트워크 문제 발생 시,
-            Toast.makeText(this, "네트워크가 연결되지 않았습니다", Toast.LENGTH_LONG).show();
-            return "네트워크가 연결되지 않았습니다";
-        } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "GPS 좌표가 잘못되었습니다", Toast.LENGTH_LONG).show();
-            return "GPS 좌표가 잘못되었습니다";
-
-        }
-
-
-        if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(this, "주소를 찾을 수 없습니다", Toast.LENGTH_LONG).show();
-            return "주소를 찾을 수 없습니다";
-
-        } else {
-            Address address = addresses.get(0);
-            return address.getAddressLine(0).toString();
-        }
-
-    }
-
-
-    public boolean checkLocationServicesStatus() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-
-    public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
-
-
-        if (currentMarker != null) currentMarker.remove();
-
-
-        LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(currentLatLng);
-        markerOptions.title(markerTitle);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location));
-        markerOptions.snippet(markerSnippet);
-        markerOptions.draggable(true);
-
-
-        currentMarker = map.addMarker(markerOptions);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
-        map.moveCamera(cameraUpdate);
-
-    }
-
-
-    public void setDefaultLocation() {
-
-
-        //디폴트 위치, 광주
-        LatLng DEFAULT_LOCATION = new LatLng(35.15506884797796, 126.83761778574868);
-        String markerTitle = "위치정보 가져올 수 없음";
-        String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
-
-
-        if (currentMarker != null) currentMarker.remove();
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
-        markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
-        markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        currentMarker = map.addMarker(markerOptions);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
-        map.moveCamera(cameraUpdate);
-
-    }
-
-
-    //여기부터는 런타임 퍼미션 처리을 위한 메소드들
-    private boolean checkPermission() {
-
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-
-
-        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
-                hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-
-    /*
-     * ActivityCompat.requestPermissions를 사용한 퍼미션 요청의 결과를 리턴받는 메소드입니다.
-     */
-    @Override
-    public void onRequestPermissionsResult(int permsRequestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grandResults) {
-
-        super.onRequestPermissionsResult(permsRequestCode, permissions, grandResults);
-        if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.length == REQUIRED_PERMISSIONS.length) {
-
-            // 요청 코드가 PERMISSIONS_REQUEST_CODE 이고, 요청한 퍼미션 개수만큼 수신되었다면
-
-            boolean check_result = true;
-
-
-            // 모든 퍼미션을 허용했는지 체크
-
-            for (int result : grandResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
-                    check_result = false;
-                    break;
-                }
-            }
-
-
-            if (check_result) {
-
-                // 퍼미션을 허용했다면 위치 업데이트를 시작
-                startLocationUpdates();
-            } else {
-                // 거부한 퍼미션이 있다면 앱을 사용할 수 없는 이유를 설명해주고 앱을 종료합니다.2 가지 경우가 있습니다.
-
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
-
-
-                    // 사용자가 거부만 선택한 경우에는 앱을 다시 실행하여 허용을 선택하면 앱을 사용할 수 있습니다.
-                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
-                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-
-                            finish();
-                        }
-                    }).show();
-
-                } else {
-
-
-                    // "다시 묻지 않음"을 사용자가 체크하고 거부를 선택한 경우에는 설정(앱 정보)에서 퍼미션을 허용해야 앱을 사용할 수 있습니다.
-                    Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 설정(앱 정보)에서 퍼미션을 허용해야 합니다. ",
-                            Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View view) {
-
-                            finish();
-                        }
-                    }).show();
-                }
-            }
-
-        }
-    }
-
-
-    //여기부터는 GPS 활성화를 위한 메소드들
-    private void showDialogForLocationServiceSetting() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("위치 서비스 비활성화");
-        builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
-                + "설정으로 이동하시겠습니까?");
-        builder.setCancelable(true);
-        builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                Intent callGPSSettingIntent
-                        = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivityForResult(callGPSSettingIntent, GPS_ENABLE_REQUEST_CODE);
-            }
-        });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        builder.create().show();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-
-            case GPS_ENABLE_REQUEST_CODE:
-
-                //사용자가 GPS 활성 시켰는지 검사
-                if (checkLocationServicesStatus()) {
-                    if (checkLocationServicesStatus()) {
-
-                        Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
-
-
-                        needRequest = true;
-
-                        return;
-                    }
-                }
-
-                break;
-        }
-    }
-
-
-    private class GetData extends AsyncTask<String, Void, String> {
-
-        ProgressDialog progressDialog;
-        String errorString = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(MainActivity.this, "Please Wait", null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            progressDialog.dismiss();
-            //mTextViewResult.setText(result);
-            Log.d(TAG2, "response - " + result);
-
-            if (result == null) {
-                Log.d("error", errorString);
-            } else {
-                mJsonString = result;
-                showResult();
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String serverURL = params[0];
-            String postParameters = params[1];
-
-            try {
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG2, "response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                } else {
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString().trim();
-            } catch (Exception e) {
-                Log.d(TAG2, "GetData : Error", e);
-                errorString = e.toString();
-
-                return null;
-            }
-        }
-    }
-
-    private void showResult() {
-        String TAG_JSON = "webnautes";  // 민서
-//        String TAG_JSON = "noa_on_air";   // 유진
-//        String TAG_NAME = "name";
-//        String TAG_ADDRESS = "address";
-//        String TAG_IMAGE = "photo";
-        String TAG_KICKBOARD = "kickboard";
-        String TAG_ID = "id";
-//        String TAG_LATITUDE = "latitude";
-//        String TAG_LONGITUDE = "longitude";
-        String TAG_GCOOTER = "gcooter";
-        String TAG_DEER = "deer";
-        String TAG_BEAM = "beam";
-        String TAG_TALANG = "talang";
-        String TAG_BICYCLE = "bicycle";
-
-        try {
-            JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
-
-            pmAdapter = new PMListAdapter();
-
-            for (int i = 1; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-
-//                String name = item.getString(TAG_NAME);
-//                String address = item.getString(TAG_ADDRESS);
-//                String image = item.getString(TAG_IMAGE);
-                String kickboard = item.getString(TAG_KICKBOARD);
-                String bicycle = item.getString(TAG_BICYCLE);
-//                double latitude = item.getDouble(TAG_LATITUDE);
-//                double longitude = item.getDouble(TAG_LONGITUDE);
-                String gcooter = item.getString(TAG_GCOOTER);
-                String deer = item.getString(TAG_DEER);
-                String beam = item.getString(TAG_BEAM);
-                String talang = item.getString(TAG_TALANG);
-                String id = item.getString(TAG_ID);
-
-
-
-                int number = Integer.parseInt(kickboard.replaceAll("[^0-9]",""))
-                        + Integer.parseInt(bicycle.replaceAll("[^0-9]",""));
-                String stNumber = Integer.toString(number);
-
-            }
-            recyclerView.setAdapter(pmAdapter);
-        } catch (JSONException e) {
-            Log.d(TAG2, "showResult : ", e);
-        }
-    }
+//    public void drawPath() {
+//        TMapPoint end = new TMapPoint(35.1755091, 126.9071166);
+//        tMapData = new TMapData();
+//        tMapData.findPathData(start, end, new TMapData.FindPathDataListenerCallback() {
+//            @Override
+//            public void onFindPathData(TMapPolyLine tMapPolyLine) {
+//                tMapPolyLine.setLineColor(Color.BLUE);
+//                tMapView.addTMapPath(tMapPolyLine);
+//            }
+//        });
+//    }
 
     public void openDB() {
-        Log.v(TAG, "openDB() 실행");
+        Log.v("test", "openDB() 실행");
         DatabaseHelper helper = new DatabaseHelper(getApplicationContext());
         database = helper.getWritableDatabase();
 
 
         if (database != null) {
-            Log.v(TAG, "DB 열기 성공!");
+            Log.v("test", "DB 열기 성공!");
         } else {
-            Log.e(TAG, "DB 열기 실패!");
+            Log.e("test", "DB 열기 실패!");
         }
     }
 }
-//    pulic ArrayList<String> user_info(String user_id, String user_latitude, String user_longitude){
-//
-//}
+
