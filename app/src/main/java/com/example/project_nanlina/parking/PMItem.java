@@ -3,13 +3,17 @@ package com.example.project_nanlina.parking;
 public class PMItem {
     String name;
     String address;
+    String latitude;
+    String longitude;
     String photo;
     String kickboard;
     String bicycle;
 
-    public PMItem(String name, String address, String photo, String kickboard, String bicycle) {
+    public PMItem(String name, String address, String latitude, String longitude, String photo, String kickboard, String bicycle) {
         this.name = name;
         this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.photo = photo;
         this.kickboard = kickboard;
         this.bicycle = bicycle;
@@ -29,6 +33,22 @@ public class PMItem {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public String getPhoto() {

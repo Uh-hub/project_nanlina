@@ -11,20 +11,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.project_nanlina.FindRoad;
 import com.example.project_nanlina.R;
 import com.example.project_nanlina.qrcode.PMIdInput;
 import com.example.project_nanlina.qrcode.QRCodeReader;
 
 public class ParkingInfo extends AppCompatActivity {
 
+    public static double pLatitude;
+    public static double pLongitude;
+
     private Button qrcode;
+    private Button findRoad;
     private TextView tvName;
     private TextView tvAddress;
     private TextView tvKickboard;
     private TextView tvBicycle;
     private ImageView imageView;
     private TextView tvVacant;
-
     private ImageView backButton;
 
     @Override
@@ -33,12 +37,22 @@ public class ParkingInfo extends AppCompatActivity {
         setContentView(R.layout.parking_info);
 
         qrcode = findViewById(R.id.qrcode);
+        findRoad = findViewById(R.id.find_road);
 
         // qrcode 버튼 화면 이동
         qrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), QRCodeReader.class);
+                startActivity(intent);
+            }
+        });
+
+        // 길찾기 버튼 화면 이동
+        findRoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FindRoad.class);
                 startActivity(intent);
             }
         });
@@ -52,6 +66,8 @@ public class ParkingInfo extends AppCompatActivity {
         String bicycle = getIntent().getStringExtra("bicycle");
         int number = Integer.parseInt(kickboard) + Integer.parseInt(bicycle);
 
+        pLatitude = Double.parseDouble(getIntent().getStringExtra("latitude"));
+        pLongitude = Double.parseDouble(getIntent().getStringExtra("longitude"));
 
 
         tvName = findViewById(R.id.tvName);

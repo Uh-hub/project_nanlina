@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
     TMapData tMapData = null;
     TMapPoint start = null;
 
+    public static double pLatitude;
+    public static double pLongitude;
+
     @Override
     public void onLocationChange(Location location) {
         tMapView.setLocationPoint(location.getLongitude(), location.getLatitude());
@@ -228,22 +231,22 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 String address = cursor.getString(2);
-                double latitude = cursor.getDouble(3);
-                double longitude = cursor.getDouble(4);
+                String latitude = cursor.getString(3);
+                String longitude = cursor.getString(4);
                 String photo = cursor.getString(5);
                 String kickboard = cursor.getString(6);
                 String bicycle = cursor.getString(7);
 
                 // 주차장 위치에 마커 띄우기
                 TMapMarkerItem mapMarkerItem = new TMapMarkerItem();
-                TMapPoint tMapPoint = new TMapPoint(latitude, longitude);
+                TMapPoint tMapPoint = new TMapPoint(Double.parseDouble(latitude), Double.parseDouble(longitude));
                 Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.poi_dot);
                 mapMarkerItem.setIcon(bitmap);
                 mapMarkerItem.setPosition(0.5f, 1.0f);
                 mapMarkerItem.setTMapPoint(tMapPoint);
                 tMapView.addMarkerItem("markerItem" + i, mapMarkerItem);
 
-                pmAdapter.addItem(new PMItem(name, address, photo, kickboard, bicycle));
+                pmAdapter.addItem(new PMItem(name, address, latitude, longitude, photo, kickboard, bicycle));
 
                 pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
                     @Override
@@ -253,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                         Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
                         intent.putExtra("name", item.getName());
                         intent.putExtra("address", item.getAddress());
+                        intent.putExtra("latitude", item.getLatitude());
+                        intent.putExtra("longitude", item.getLongitude());
                         intent.putExtra("photo", item.getPhoto());
                         intent.putExtra("kickboard", item.getKickboard());
                         intent.putExtra("bicycle", item.getBicycle());
@@ -268,27 +273,8 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         }
 
         recyclerView.setAdapter(pmAdapter);
-
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                start = tMapView.getCenterPoint();
-//                drawPath();
-//            }
-//        }, 5000);
     }
 
-//    public void drawPath() {
-//        TMapPoint end = new TMapPoint(35.1755091, 126.9071166);
-//        tMapData = new TMapData();
-//        tMapData.findPathData(start, end, new TMapData.FindPathDataListenerCallback() {
-//            @Override
-//            public void onFindPathData(TMapPolyLine tMapPolyLine) {
-//                tMapPolyLine.setLineColor(Color.BLUE);
-//                tMapView.addTMapPath(tMapPolyLine);
-//            }
-//        });
-//    }
 
     public void openDB() {
         Log.v("test", "openDB() 실행");
