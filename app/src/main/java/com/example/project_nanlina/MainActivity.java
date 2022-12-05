@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         // 맨 처음 초기화 데이터 보여주기 (select) - 주차장 이름, 주소, 사진, 위도, 경도는 sqllite로 가져오기
         if (database != null) {
             String tableName = "pm_info";
-            String query = "select id, name, address, latitude, longitude, photo from " + tableName;
+            String query = "select id, name, address, latitude, longitude, photo, kickboard, bicycle from " + tableName;
             Cursor cursor = database.rawQuery(query, null);
             Log.v("test", "조회된 데이터 수 : " + cursor.getCount());
 
@@ -231,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                 double latitude = cursor.getDouble(3);
                 double longitude = cursor.getDouble(4);
                 String photo = cursor.getString(5);
+                String kickboard = cursor.getString(6);
+                String bicycle = cursor.getString(7);
 
                 // 주차장 위치에 마커 띄우기
                 TMapMarkerItem mapMarkerItem = new TMapMarkerItem();
@@ -241,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                 mapMarkerItem.setTMapPoint(tMapPoint);
                 tMapView.addMarkerItem("markerItem" + i, mapMarkerItem);
 
-                pmAdapter.addItem(new PMItem(name, address, photo));
+                pmAdapter.addItem(new PMItem(name, address, photo, kickboard, bicycle));
 
                 pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
                     @Override
@@ -252,9 +254,8 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                         intent.putExtra("name", item.getName());
                         intent.putExtra("address", item.getAddress());
                         intent.putExtra("photo", item.getPhoto());
-//                        intent.putExtra("kickboard", item.getKickboard());
-//                        intent.putExtra("bicycle", item.getBicycle());
-//                        intent.putExtra("number", item.getNumber());
+                        intent.putExtra("kickboard", item.getKickboard());
+                        intent.putExtra("bicycle", item.getBicycle());
 
                         startActivity(intent);
 //                    Toast.makeText(getApplicationContext(), "아이템 선택됨: " + item.getName(), Toast.LENGTH_LONG).show();

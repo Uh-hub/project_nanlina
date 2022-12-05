@@ -104,7 +104,7 @@ public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder
         public void setItem(PMItem item) {
             textName.setText(item.getName());
             textAddress.setText(item.getAddress());
-            buttonNumber.setText(item.getNumber() + "대");
+            buttonNumber.setText(Integer.toString(Integer.parseInt(item.getKickboard()) + Integer.parseInt(item.getBicycle())) + "대");
 
             textPhoto.setText(item.getPhoto());
             textKickboard.setText(item.getKickboard());

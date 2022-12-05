@@ -6,15 +6,13 @@ public class PMItem {
     String photo;
     String kickboard;
     String bicycle;
-    String number;
 
-    public PMItem(String name, String address, String photo) {
+    public PMItem(String name, String address, String photo, String kickboard, String bicycle) {
         this.name = name;
         this.address = address;
         this.photo = photo;
-//        this.kickboard = kickboard;
-//        this.bicycle = bicycle;
-//        this.number = number;
+        this.kickboard = kickboard;
+        this.bicycle = bicycle;
     }
 
     public String getName() {
@@ -55,13 +53,5 @@ public class PMItem {
 
     public void setBicycle(String bicycle) {
         this.bicycle = bicycle;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 }

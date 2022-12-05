@@ -9,13 +9,12 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_gravity="center"
+            android:layout_height="230dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_launcher_background" />
 
@@ -23,188 +22,190 @@
         <ImageView
             android:id="@+id/backButton"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             app:srcCompat="@drawable/back_arrow2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/round1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:fontFamily="@font/nanum_square_b"
+                android:gravity="center"
+                android:text="주차장 이름"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanum_square_b"
+                android:gravity="center"
+                android:text="주차장 주소"
+                android:textAlignment="center"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/qrcode"
+                    android:layout_width="130dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button3"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:text="대여"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text=" " />
+
+                <Button
+                    android:layout_width="130dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button2"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:text="길찾기"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/round3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:text="전동킥보드"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tvKickboard"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/button1"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:gravity="center"
+                    android:text="0대"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/round3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="9"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:text="자전거"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tvBicycle"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="3"
+                    android:background="@drawable/button1"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:gravity="center"
+                    android:text="0대"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/round3"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="7"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:text="주차 가능 자리"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tvVacant"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_weight="4"
+                    android:background="@drawable/button4"
+                    android:fontFamily="@font/nanum_square_b"
+                    android:gravity="center"
+                    android:text="0대"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="20dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </FrameLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical"
-        android:background="@drawable/round1">
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/nanum_square_b"
-            android:text="주차장 이름"
-            android:textColor="@color/black"
-            android:textSize="25dp"/>
-
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
-            android:gravity="center"
-            android:fontFamily="@font/nanum_square_b"
-            android:textSize="15dp"
-            android:text="주차장 주소" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/qrcode"
-                android:layout_width="130dp"
-                android:layout_height="45dp"
-                android:layout_weight="1"
-                android:background="@drawable/button3"
-                android:textColor="@color/white"
-                android:fontFamily="@font/nanum_square_b"
-                android:textSize="20dp"
-                android:text="대여" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text=" "/>
-
-            <Button
-                android:layout_width="130dp"
-                android:layout_height="45dp"
-                android:layout_weight="1"
-                android:background="@drawable/button2"
-                android:fontFamily="@font/nanum_square_b"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:text="길찾기"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/round3"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="7"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="전동킥보드"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-
-            <TextView
-                android:id="@+id/tvKickboard"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="30dp"
-                android:layout_weight="3"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:background="@drawable/button1"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="0대"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/round3"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="9"
-                android:text="자전거"
-                android:fontFamily="@font/nanum_square_b"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-
-            <TextView
-                android:id="@+id/tvBicycle"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="30dp"
-                android:layout_weight="3"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:background="@drawable/button1"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="0대"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/round3"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="7"
-                android:text="주차 가능 자리"
-                android:fontFamily="@font/nanum_square_b"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-
-            <TextView
-                android:id="@+id/tvVacant"
-                android:layout_width="50dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="30dp"
-                android:layout_weight="4"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:background="@drawable/button4"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="0대"
-                android:textColor="@color/black"
-                android:textSize="20dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
 </LinearLayout>
