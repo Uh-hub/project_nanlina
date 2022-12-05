@@ -57,7 +57,6 @@ public class ParkingInfo extends AppCompatActivity {
             }
         });
 
-
         // 주차장 데이터 가져오기
         String name = getIntent().getStringExtra("name");
         String address = getIntent().getStringExtra("address");
