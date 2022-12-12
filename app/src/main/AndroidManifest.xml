@@ -51,7 +51,8 @@
         <activity
             android:name=".FinishActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
-        <activity android:name=".FindRoad"></activity>
+        <activity android:name=".FindRoad"/>
+        <activity android:name=".qrcode.InUse"/>
     </application>
 
 </manifest>

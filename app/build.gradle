@@ -60,4 +60,6 @@ dependencies {
     // glide - 링크에서 이미지 가져오기
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation 'com.android.volley:volley-cronet:1.2.1'
 }

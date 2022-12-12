@@ -1,5 +1,7 @@
 package com.example.project_nanlina.qrcode;
 
+import static java.sql.DriverManager.println;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,6 +13,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.project_nanlina.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -25,6 +34,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QRCodeReader extends AppCompatActivity {
 
@@ -40,6 +51,8 @@ public class QRCodeReader extends AppCompatActivity {
 
     String pm_name;
     String pm_type;
+
+    static RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +81,10 @@ public class QRCodeReader extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
     }
 
     @Override
@@ -118,8 +135,9 @@ public class QRCodeReader extends AppCompatActivity {
                     pm_type = "bicycle";
                 }
 
-                InsertData task = new InsertData();
-                task.execute("http://" + IP_ADDRESS + "/insert.php", useID);
+//                makeRequest();
+                Intent intent2 = new Intent(getApplicationContext(), InUse.class);
+                startActivity(intent2);
             }
         }
         else {
@@ -127,82 +145,31 @@ public class QRCodeReader extends AppCompatActivity {
         }
     }
 
+    public void makeRequest() {
+        String url = "http://127.0.0.1:8000/manager/rent/?pid=1&mid=1&latitude=1&longitude=1";
 
-    class InsertData extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        println("응답 -> " + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        println("에러 -> " + error.getMessage());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(QRCodeReader.this, "Please Wait",
-                    null, true, true);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            progressDialog.dismiss();
-            Log.d(TAG, "POST response - " + result);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String useID = (String)params[1];
-            String name = getIntent().getStringExtra("name");
-
-            String serverURL = (String)params[0];
-
-            // 웹으로 전송되는 데이터
-            String postParameters = "useID=" + useID + "&name=" + name + "&pm_name=" + pm_name + "&pm_type=" + pm_type;
-
-            try {
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-                Log.d(TAG, "POST response code - " + responseStatusCode);
-
-                InputStream inputStream;
-                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                }
-                else {
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString();
+                return params;
             }
-            catch (Exception e) {
-                Log.d(TAG, "InsertData: Error ", e);
-
-                return new String("Error: " + e.getMessage());
-            }
-        }
+        };
+        request.setShouldCache(false);
+        requestQueue.add(request);
+        println("요청 보냄");
     }
-
 }
