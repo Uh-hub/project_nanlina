@@ -1,6 +1,8 @@
 package com.example.project_nanlina.parking;
 
 public class PMItem {
+
+    String id;
     String name;
     String address;
     String latitude;
@@ -9,7 +11,8 @@ public class PMItem {
     String kickboard;
     String bicycle;
 
-    public PMItem(String name, String address, String latitude, String longitude, String photo, String kickboard, String bicycle) {
+    public PMItem(String id, String name, String address, String latitude, String longitude, String photo, String kickboard, String bicycle) {
+        this.id = id;
         this.name = name;
         this.address = address;
         this.latitude = latitude;
@@ -17,6 +20,14 @@ public class PMItem {
         this.photo = photo;
         this.kickboard = kickboard;
         this.bicycle = bicycle;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

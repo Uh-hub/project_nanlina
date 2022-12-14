@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
 
             for (int i = 0; i < cursor.getCount(); i++) {
                 cursor.moveToNext();
-                int id = cursor.getInt(0);
+                String id = cursor.getString(0);
                 String name = cursor.getString(1);
                 String address = cursor.getString(2);
                 String latitude = cursor.getString(3);
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                 mapMarkerItem.setTMapPoint(tMapPoint);
                 tMapView.addMarkerItem("markerItem" + i, mapMarkerItem);
 
-                pmAdapter.addItem(new PMItem(name, address, latitude, longitude, photo, kickboard, bicycle));
+                pmAdapter.addItem(new PMItem(id, name, address, latitude, longitude, photo, kickboard, bicycle));
 
                 pmAdapter.setOnItemClickListener(new OnPMItemClickListener() {
                     @Override
@@ -254,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
                         PMItem item = pmAdapter.getItem(position);
 
                         Intent intent = new Intent(getApplicationContext(), ParkingInfo.class);
+                        intent.putExtra("id", item.getId());
                         intent.putExtra("name", item.getName());
                         intent.putExtra("address", item.getAddress());
                         intent.putExtra("latitude", item.getLatitude());

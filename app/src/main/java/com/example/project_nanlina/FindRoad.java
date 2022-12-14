@@ -102,7 +102,6 @@ public class FindRoad extends AppCompatActivity implements TMapGpsManager.onLoca
                 tMapView.addTMapPath(tMapPolyLine);
                 double distance = tMapPolyLine.getDistance() / 1000;
                 double time = distance/1.2 * 3;    // 자동차의 평균 속력은 60km/h, 전동킥보드 속력 20km/h
-                Log.v("test", Double.toString(distance));
 
                 distanceshow = String.format("%.2f", distance);
                 timeshow = (int) time;

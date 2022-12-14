@@ -18,9 +18,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.parking.ParkingInfo;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -31,6 +33,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -135,7 +138,7 @@ public class QRCodeReader extends AppCompatActivity {
                     pm_type = "bicycle";
                 }
 
-//                makeRequest();
+                makeRequest();
                 Intent intent2 = new Intent(getApplicationContext(), InUse.class);
                 startActivity(intent2);
             }
@@ -146,30 +149,67 @@ public class QRCodeReader extends AppCompatActivity {
     }
 
     public void makeRequest() {
-        String url = "http://127.0.0.1:8000/manager/rent/?pid=1&mid=1&latitude=1&longitude=1";
+        String url = "http://127.0.0.1:8000/check/";
 
-        StringRequest request = new StringRequest(Request.Method.GET, url,
+        // 왜 안되니..
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        println("응답 -> " + response);
+                        Log.v("response", response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        println("에러 -> " + error.getMessage());
+                        Log.v("error", error.getMessage());
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("rid", useID);
+                params.put("latitude", Double.toString(35.1629723));
+                params.put("longitude", Double.toString(126.9186564));
+                return params;
+            }
+        };
+        postRequest.setShouldCache(false);
+        requestQueue.add(postRequest);
+
+
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.v("response", response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.v("error", error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "text/plain");
+                headers.put("X-CSRFToken", "ETKdheO9U73bBg7UH1bLOcKXCtMnleyK");
+                return headers;
+            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("pid", ParkingInfo.id);
+                Log.v("test", ParkingInfo.id);
+                params.put("kickboard", Integer.toString(-1));
 
                 return params;
             }
         };
-        request.setShouldCache(false);
-        requestQueue.add(request);
-        println("요청 보냄");
+        putRequest.setShouldCache(false);
+        requestQueue.add(putRequest);
+        Log.v("test", "요청 보냄");
     }
 }

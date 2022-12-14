@@ -20,6 +20,7 @@ public class ParkingInfo extends AppCompatActivity {
 
     public static double pLatitude;
     public static double pLongitude;
+    public static String id;
 
     private Button qrcode;
     private Button findRoad;
@@ -65,6 +66,7 @@ public class ParkingInfo extends AppCompatActivity {
         String bicycle = getIntent().getStringExtra("bicycle");
         int number = Integer.parseInt(kickboard) + Integer.parseInt(bicycle);
 
+        id = getIntent().getStringExtra("id");
         pLatitude = Double.parseDouble(getIntent().getStringExtra("latitude"));
         pLongitude = Double.parseDouble(getIntent().getStringExtra("longitude"));
 
