@@ -1,4 +1,4 @@
-package com.example.project_nanlina.parking;
+package com.example.project_nanlina.controller.parking;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.project_nanlina.OnPMItemClickListener;
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.model.PMItem;
 
 import java.util.ArrayList;
 
-public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder>
-        implements OnPMItemClickListener {
+public class PMListAdapter extends RecyclerView.Adapter<PMListAdapter.ViewHolder> implements OnPMItemClickListener {
 
     ArrayList<PMItem> items = new ArrayList<PMItem>();
-
     OnPMItemClickListener listener;
 
     @NonNull

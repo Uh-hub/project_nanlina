@@ -1,4 +1,4 @@
-package com.example.project_nanlina;
+package com.example.project_nanlina.model;
 
 import android.content.Context;
 import android.content.res.AssetManager;

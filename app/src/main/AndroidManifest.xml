@@ -28,12 +28,12 @@
             android:value="AIzaSyD_s2_BwFrKHJUgQ_05_Qw5CpTIGLj47DI" />
 
         <activity
-            android:name=".login.ActivityLogIn"
+            android:name=".controller.login.ActivityLogIn"
             android:exported="true" />
         <activity
-            android:name=".login.ActivityRegister"
+            android:name=".controller.login.ActivityRegister"
             android:exported="true" />
-        <activity android:name=".IntroPage">
+        <activity android:name=".view.IntroPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,18 +41,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".controller.MainActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".login.RegisterFinish" />
-        <activity android:name=".qrcode.QRCodeReader" />
-        <activity android:name=".qrcode.PMIdInput" />
-        <activity android:name=".parking.ArriveParking" />
-        <activity android:name=".parking.ParkingInfo" />
+        <activity android:name=".controller.login.RegisterFinish" />
+        <activity android:name=".controller.qrcode.QRCodeReader" />
+        <activity android:name=".controller.qrcode.PMIdInput" />
+        <activity android:name=".view.ArriveParking" />
+        <activity android:name=".controller.parking.ParkingInfo" />
         <activity
-            android:name=".FinishActivity"
+            android:name=".view.FinishActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
-        <activity android:name=".FindRoad"/>
-        <activity android:name=".qrcode.InUse"/>
+        <activity android:name=".controller.FindRoad"/>
+        <activity android:name=".controller.qrcode.InUse"/>
     </application>
 
 </manifest>

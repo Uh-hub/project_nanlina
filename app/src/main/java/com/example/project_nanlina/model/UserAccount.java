@@ -1,4 +1,4 @@
-package com.example.project_nanlina.login;
+package com.example.project_nanlina.model;
 
 // 사용자 계정 정보 모델 클래스
 public class UserAccount {

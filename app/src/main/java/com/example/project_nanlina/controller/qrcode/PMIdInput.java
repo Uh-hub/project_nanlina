@@ -1,4 +1,4 @@
-package com.example.project_nanlina.qrcode;
+package com.example.project_nanlina.controller.qrcode;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -7,13 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_nanlina.R;
-import com.example.project_nanlina.parking.ParkingInfo;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

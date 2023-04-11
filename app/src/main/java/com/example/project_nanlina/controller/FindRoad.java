@@ -1,4 +1,4 @@
-package com.example.project_nanlina;
+package com.example.project_nanlina.controller;
 
 import android.Manifest;
 import android.graphics.Color;
@@ -6,16 +6,15 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_nanlina.parking.ParkingInfo;
+import com.example.project_nanlina.R;
+import com.example.project_nanlina.controller.parking.ParkingInfo;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapPoint;

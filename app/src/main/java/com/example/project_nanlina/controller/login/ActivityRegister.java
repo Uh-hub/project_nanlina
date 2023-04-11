@@ -1,4 +1,4 @@
-package com.example.project_nanlina.login;
+package com.example.project_nanlina.controller.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.project_nanlina.FinishActivity;
-import com.example.project_nanlina.MainActivity;
 import com.example.project_nanlina.R;
-import com.example.project_nanlina.qrcode.QRCodeReader;
+import com.example.project_nanlina.model.UserAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

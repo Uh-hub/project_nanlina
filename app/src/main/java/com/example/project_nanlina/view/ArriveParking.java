@@ -1,4 +1,4 @@
-package com.example.project_nanlina.parking;
+package com.example.project_nanlina.view;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_nanlina.FinishActivity;
+import com.example.project_nanlina.view.FinishActivity;
 import com.example.project_nanlina.R;
 
 public class ArriveParking extends AppCompatActivity {
@@ -65,7 +65,5 @@ public class ArriveParking extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
-
 }

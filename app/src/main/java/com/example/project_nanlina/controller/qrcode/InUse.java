@@ -1,4 +1,4 @@
-package com.example.project_nanlina.qrcode;
+package com.example.project_nanlina.controller.qrcode;
 
 import android.Manifest;
 import android.graphics.Color;
@@ -6,13 +6,12 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_nanlina.R;
-import com.example.project_nanlina.parking.ParkingInfo;
+import com.example.project_nanlina.controller.parking.ParkingInfo;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapPoint;

@@ -1,5 +1,6 @@
-package com.example.project_nanlina.parking;
+package com.example.project_nanlina.model;
 
+// 주차장 정보 모델 클래스
 public class PMItem {
 
     String id;
