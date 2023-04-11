@@ -7,14 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.project_nanlina.R;
 import com.example.project_nanlina.controller.parking.ParkingInfo;
+import com.example.project_nanlina.databinding.FindRoadBinding;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapPoint;
@@ -27,12 +24,11 @@ public class FindRoad extends AppCompatActivity implements TMapGpsManager.onLoca
     TMapGpsManager tMapGPS = null; // GPS 사용
     TMapData tMapData = null;
     TMapPoint start = null;
-    private ImageView backButton;
 
     public String distanceshow;
     public int timeshow;
-    private TextView tvDistance;
-    private TextView tvTime;
+
+    private FindRoadBinding binding;
 
     @Override
     public void onLocationChange(Location location) {
@@ -43,19 +39,15 @@ public class FindRoad extends AppCompatActivity implements TMapGpsManager.onLoca
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.find_road);
-
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayoutTmap);
-        tvDistance = (TextView) findViewById(R.id.tvDistance);
-        tvTime = (TextView) findViewById(R.id.tvTime);
+        binding = FindRoadBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         tMapView = new TMapView(this); // T map View
-        linearLayout.addView(tMapView);
+        binding.linearLayoutTmap.addView(tMapView);
         tMapView.setSKTMapApiKey("l7xxd4933c1088df4195a25e3e31de55d514");
 
         // 뒤로가기 버튼 구현
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -110,8 +102,8 @@ public class FindRoad extends AppCompatActivity implements TMapGpsManager.onLoca
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                tvDistance.setText(distanceshow + "km");
-                tvTime.setText("약 " + Integer.toString(timeshow) + "분");
+                binding.tvDistance.setText(distanceshow + "km");
+                binding.tvTime.setText("약 " + Integer.toString(timeshow) + "분");
             }
         }, 3000);
     }

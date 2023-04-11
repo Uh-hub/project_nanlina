@@ -3,9 +3,6 @@ package com.example.project_nanlina.controller.parking;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +11,7 @@ import com.example.project_nanlina.controller.FindRoad;
 import com.example.project_nanlina.R;
 import com.example.project_nanlina.controller.qrcode.PMIdInput;
 import com.example.project_nanlina.controller.qrcode.QRCodeReader;
+import com.example.project_nanlina.databinding.ParkingInfoBinding;
 
 public class ParkingInfo extends AppCompatActivity {
 
@@ -21,26 +19,16 @@ public class ParkingInfo extends AppCompatActivity {
     public static double pLongitude;
     public static String id;
 
-    private Button qrcode;
-    private Button findRoad;
-    private TextView tvName;
-    private TextView tvAddress;
-    private TextView tvKickboard;
-    private TextView tvBicycle;
-    private ImageView imageView;
-    private TextView tvVacant;
-    private ImageView backButton;
+    private ParkingInfoBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.parking_info);
-
-        qrcode = findViewById(R.id.qrcode);
-        findRoad = findViewById(R.id.find_road);
+        binding = ParkingInfoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // qrcode 버튼 화면 이동
-        qrcode.setOnClickListener(new View.OnClickListener() {
+        binding.qrcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), QRCodeReader.class);
@@ -49,7 +37,7 @@ public class ParkingInfo extends AppCompatActivity {
         });
 
         // 길찾기 버튼 화면 이동
-        findRoad.setOnClickListener(new View.OnClickListener() {
+        binding.findRoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FindRoad.class);
@@ -69,18 +57,10 @@ public class ParkingInfo extends AppCompatActivity {
         pLatitude = Double.parseDouble(getIntent().getStringExtra("latitude"));
         pLongitude = Double.parseDouble(getIntent().getStringExtra("longitude"));
 
-
-        tvName = findViewById(R.id.tvName);
-        tvAddress = findViewById(R.id.tvAddress);
-        imageView = findViewById(R.id.imageView);
-        tvKickboard = findViewById(R.id.tvKickboard);
-        tvBicycle = findViewById(R.id.tvBicycle);
-        tvVacant = findViewById(R.id.tvVacant);
-
-        tvName.setText(name);
-        tvAddress.setText(address);
-        tvKickboard.setText(kickboard + "대");
-        tvBicycle.setText(bicycle + "대");
+        binding.tvName.setText(name);
+        binding.tvAddress.setText(address);
+        binding.tvKickboard.setText(kickboard + "대");
+        binding.tvBicycle.setText(bicycle + "대");
 
         Intent intent = new Intent(getApplicationContext(), PMIdInput.class);
         intent.putExtra("name", name);
@@ -88,18 +68,15 @@ public class ParkingInfo extends AppCompatActivity {
         // 주차 가능 자리 계산하기 (10대 주차 가능한걸로 가정)
 //        int number2 = Integer.parseInt(number.replaceAll("[^0-9]",""));
         String stVacant = Integer.toString(10 - number);
-
-        tvVacant.setText(stVacant + "대");
-
+        binding.tvVacant.setText(stVacant + "대");
 
         // Glide로 이미지 표시하기
 //         Log.v("image url", photo);
-        Glide.with(this).load(photo).error(R.drawable.main_logo).into(imageView);
+        Glide.with(this).load(photo).error(R.drawable.main_logo).into(binding.imageView);
 
 
         // 뒤로가기 버튼 구현
-        backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();

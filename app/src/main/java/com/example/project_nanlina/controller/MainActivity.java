@@ -28,6 +28,8 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project_nanlina.databinding.ActivityMainBinding;
+import com.example.project_nanlina.databinding.ParkingInfoBinding;
 import com.example.project_nanlina.model.DatabaseHelper;
 import com.example.project_nanlina.controller.parking.OnPMItemClickListener;
 import com.example.project_nanlina.R;
@@ -48,25 +50,15 @@ import com.skt.Tmap.TMapPoint;
 public class MainActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback {
 
     private FirebaseAuth mFirebaseAuth;
-    private View mLayout; // Snackbar 사용하기 위해 View 필요
-
-    // MySQL 연동
-    private static String IP_ADDRESS = "10.0.2.2";
-    private static String TAG2 = "phptest";
-    private String mJsonString;
 
     // SQLlite 연동
-    private RecyclerView recyclerView;
     private PMListAdapter pmAdapter;
     SQLiteDatabase database;
 
     TMapView tMapView = null; // T map View
     TMapGpsManager tMapGPS = null; // GPS 사용
-    TMapData tMapData = null;
-    TMapPoint start = null;
 
-    public static double pLatitude;
-    public static double pLongitude;
+    private ActivityMainBinding binding;
 
     @Override
     public void onLocationChange(Location location) {
@@ -77,11 +69,11 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayoutTmap);
         tMapView = new TMapView(this); // T map View
-        linearLayout.addView(tMapView);
+        binding.linearLayoutTmap.addView(tMapView);
         tMapView.setSKTMapApiKey("l7xxd4933c1088df4195a25e3e31de55d514");
 
         tMapGPS = new TMapGpsManager(this); // GPS 사용
@@ -108,9 +100,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         // 로그인 기능
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        ImageView btn_logout = findViewById(R.id.btn_logout);
-
-        btn_logout.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 로그아웃하기
@@ -128,39 +118,32 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
 //         mFirebaseAuth.getCurrentUser().delete();
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-        // 화면 하단 주차장 정보
-        recyclerView = findViewById(R.id.recyclerView);
 
-        // 상단 분류 버튼 (전체, 전동킥보드, 전기자전거)
-        Button button1 = findViewById(R.id.button1);   // 전체
-        Button button2 = findViewById(R.id.button2);   // 전동킥보드
-        Button button3 = findViewById(R.id.button3);   // 전기자전거
-
-        button1.setSelected(true);   // 전체 버튼 눌린 상태로 유지
-        button1.setOnClickListener(new View.OnClickListener() {
+        binding.button1.setSelected(true);   // 전체 버튼 눌린 상태로 유지
+        binding.button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button1.setSelected(true);
-                button2.setSelected(false);
-                button3.setSelected(false);
+                binding.button1.setSelected(true);
+                binding.button2.setSelected(false);
+                binding.button3.setSelected(false);
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button1.setSelected(false);
-                button2.setSelected(true);
-                button3.setSelected(false);
+                binding.button1.setSelected(false);
+                binding.button2.setSelected(true);
+                binding.button3.setSelected(false);
             }
         });
 
-        button3.setOnClickListener(new View.OnClickListener() {
+        binding.button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button1.setSelected(false);
-                button2.setSelected(false);
-                button3.setSelected(true);
+                binding.button1.setSelected(false);
+                binding.button2.setSelected(false);
+                binding.button3.setSelected(true);
             }
         });
 
@@ -168,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         ////// 주차장 정보 리사이클러뷰
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        binding.recyclerView.setLayoutManager(layoutManager);
 
         openDB();
 
@@ -228,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
             Log.e("test", "selectData() db없음.");
         }
 
-        recyclerView.setAdapter(pmAdapter);
+        binding.recyclerView.setAdapter(pmAdapter);
     }
 
 

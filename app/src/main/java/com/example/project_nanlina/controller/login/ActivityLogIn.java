@@ -3,8 +3,6 @@ package com.example.project_nanlina.controller.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_nanlina.R;
 import com.example.project_nanlina.controller.MainActivity;
+import com.example.project_nanlina.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -23,26 +22,24 @@ public class ActivityLogIn extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;      // 파이어베이스 인증
     private DatabaseReference mDatabaseRef;  // 실시간 데이터베이스
-    private EditText mEtEmail, mEtPwd;       // 로그인 입력 필드
+
+    private ActivityLoginBinding binding;   // 뷰 바인딩
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("project_NanlinA");
 
-        mEtEmail = findViewById(R.id.et_email);
-        mEtPwd = findViewById(R.id.et_pwd);
-
-        Button btn_login = findViewById(R.id.btn_login);
-        btn_login.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 로그인 요청
-                String strEmail = mEtEmail.getText().toString();
-                String strPwd = mEtPwd.getText().toString();
+                String strEmail = binding.etEmail.getText().toString();
+                String strPwd = binding.etPwd.getText().toString();
 
                 mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(ActivityLogIn.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -61,8 +58,7 @@ public class ActivityLogIn extends AppCompatActivity {
             }
         });
 
-        Button btn_register = findViewById(R.id.btn_register);
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 회원가입 화면으로 이동

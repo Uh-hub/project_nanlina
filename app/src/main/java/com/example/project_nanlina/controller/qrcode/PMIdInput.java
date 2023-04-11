@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.databinding.ParkingInfoBinding;
+import com.example.project_nanlina.databinding.PmIdInputBinding;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -31,28 +33,28 @@ public class PMIdInput extends AppCompatActivity {
     String pm_name;
     String pm_type;
 
+    private PmIdInputBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pm_id_input);
-
-        EditText editText = findViewById(R.id.inputPMID);
-        Button button2 = findViewById(R.id.button2);
+        binding = PmIdInputBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         name = getIntent().getStringExtra("name");
         if (name == null) {
             name = "산수 1동 제3주차장";
         }
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        binding.button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // PM ID를 입력하지 않았을때
-                if(editText.getText().toString().length() == 0) {
+                if(binding.inputPMID.getText().toString().length() == 0) {
                     Toast.makeText(PMIdInput.this, "ID를 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    useID = editText.getText().toString();
+                    useID = binding.inputPMID.getText().toString();
                     ///////// 이용중 화면으로 이동!!!
 
                     if (useID.equals("Hv4tD64yX8")) {

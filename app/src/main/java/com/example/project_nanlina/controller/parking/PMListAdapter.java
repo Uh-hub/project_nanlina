@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.project_nanlina.R;
+import com.example.project_nanlina.databinding.ParkingInfoBinding;
 import com.example.project_nanlina.model.PMItem;
 
 import java.util.ArrayList;
