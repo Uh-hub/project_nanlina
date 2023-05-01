@@ -47,9 +47,9 @@
         <activity android:name=".controller.parking.ParkingInfo" />
         <activity
             android:name=".view.FinishActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
         <activity android:name=".controller.FindRoad"/>
-        <activity android:name=".controller.qrcode.InUse"/>
+        <activity android:name=".controller.qrcode.ActivityInUse"/>
     </application>
 
 </manifest>

@@ -121,7 +121,7 @@ public class QRCodeReader extends AppCompatActivity {
                 }
 
                 makeRequest();
-                Intent intent2 = new Intent(getApplicationContext(), InUse.class);
+                Intent intent2 = new Intent(getApplicationContext(), ActivityInUse.class);
                 startActivity(intent2);
             }
         }

@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:layout_marginBottom="10dp"
-                android:text="주차장 선 안에"
+                android:text="올바른 위치에 주차한 뒤"
                 android:fontFamily="@font/nanum_square_eb"
                 android:textSize="30dp"
                 android:textColor="@color/black"/>
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:layout_marginBottom="30dp"
-                android:text="정차해주세요"
+                android:text="완료 버튼을 눌러주세요"
                 android:fontFamily="@font/nanum_square_eb"
                 android:textSize="30dp"
                 android:textColor="@color/black"/>
@@ -97,7 +97,7 @@
                 android:textColor="@color/white"
                 android:background="@drawable/button5"
                 android:textSize="25dp"
-                android:text="주차완료" />
+                android:text="완료" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
